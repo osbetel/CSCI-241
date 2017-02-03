@@ -27,11 +27,20 @@ public class Node {
         edges.add(new Edge(start, end, distance, time, cost));
     }
 
-    public String toString() {
+    /**
+     * Retrieves just the name of this Node without any extra information
+     * @return Returns this Node's name
+     */
+    public String getName() {
         return name;
     }
 
-    public String getData() {
+    /**
+     * Override of toString()
+     * @return Returns the name of this Node and an array of all its edges as a String.
+     * The array of edges also includes distance, time, and cost.
+     */
+    public String toString() {
         return (name + ": " + Arrays.toString(edges.toArray()));
     }
 

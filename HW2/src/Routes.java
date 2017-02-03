@@ -1,6 +1,4 @@
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.*;
 
 /**
  * @author Andrew Nguyen & Sam Tang
@@ -17,37 +15,17 @@ public class Routes {
 //        DrawGraph paint = new DrawGraph(travelMap);
 
         try {
-            testNodeClass();
+            testGraphInstantiation();
         } catch (FileNotFoundException e) {
             System.out.println(e);
         }
 
     }
 
-    public static void testNodeClass() throws FileNotFoundException {
-        //Creation of all nodes
-        Scanner sc = new Scanner(new File("vertex.txt"));
-        HashMap<String, Node> graph = new HashMap<>();
-
-        String start;
-        while (sc.hasNext()) {
-            start = sc.nextLine();
-            graph.put(start, new Node(start));
-        }
-
-        sc = new Scanner(new File("edge.txt"));
-
-        String end; int distance, time, cost;
-        while (sc.hasNext()) {
-            start = sc.nextLine();
-            end = sc.nextLine();
-            distance = Integer.parseInt(sc.nextLine());
-            time = Integer.parseInt(sc.nextLine());
-            cost = Integer.parseInt(sc.nextLine());
-
-            graph.get(start).addEdge(graph.get(start), graph.get(end), distance, time, cost);
-        }
-        System.out.println(graph.get("ATL").getData());
+    //TestMethod
+    public static void testGraphInstantiation() throws FileNotFoundException {
+        MyGraph graph = new MyGraph("vertex.txt", "edge.txt");
+        System.out.println(graph.toString());
 
     }
 
