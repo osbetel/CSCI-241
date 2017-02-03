@@ -1,6 +1,8 @@
 /**
- * @author ADKN
+ * @author Andrew Nguyen & Sam Tang
  * @since 02 Feb 2017
+ *
+ * CSCI 241, WWU - Professor Ahmed, Winter 2017
  */
 public class Edge {
     private String name;
@@ -22,7 +24,7 @@ public class Edge {
     }
 
     public String toString() {
-        return name;
+        return name + " (" + distance + ", " + time + ", " + cost +")";
     }
 
 

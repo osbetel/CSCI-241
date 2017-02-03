@@ -1,19 +1,19 @@
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.LinkedList;
 
 /**
- * @author ADKN
+ * @author Andrew Nguyen & Sam Tang
  * @since 02 Feb 2017
+ *
+ * CSCI 241, WWU - Professor Ahmed, Winter 2017
  */
 public class MyGraph {
 
     //List or map? Maybe set? No duplicate airports
-    private Set<Node> graph;
+    private HashMap<String, Node> graph;
 
     //Return something that can be put into a graph
-    public static List readInputData(String nodes, String edges) {
+    public static LinkedList readInputData(String nodes, String edges) {
         //Array of nodes
         //Array of edges
         //build nodes

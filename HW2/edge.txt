@@ -1,8 +1,8 @@
-ATL	//start
-IAD	//end
-1000	//distance
-230	//time
-190	//cost
+ATL
+IAD
+1000
+230
+190
 IAD
 ATL
 125
