@@ -6,8 +6,8 @@
  */
 public class Edge {
     private String name;
-    private Node start;
-    private Node end;
+    private Vertex start;
+    private Vertex end;
     private int distance;
     private int time;
     private int cost;
@@ -20,7 +20,7 @@ public class Edge {
      * @param time travel time as an int
      * @param cost cost of the trip as an int (in dollars)
      */
-    public Edge(Node start, Node end, int distance, int time, int cost) {
+    public Edge(Vertex start, Vertex end, int distance, int time, int cost) {
         this.start = start;
         this.end = end;
         this.distance = distance;

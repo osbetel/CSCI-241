@@ -13,7 +13,7 @@ import java.util.Set;
 public class MyGraph {
 
     //HashMap appears to be the best case.
-    public HashMap<String, Node> graph;
+    public HashMap<String, Vertex> graph;
 
     /**
      * Constructor for MyGraph
@@ -36,11 +36,11 @@ public class MyGraph {
      * @return Returns a graph to the constructor, which sets it as this object's graph member
      * @throws FileNotFoundException Self-explanatory
      */
-    private static HashMap<String, Node> readInputData(String nodeFileName, String edgeFileName) throws FileNotFoundException {
+    private static HashMap<String, Vertex> readInputData(String nodeFileName, String edgeFileName) throws FileNotFoundException {
         //Creation of the graph, represented via a hashmap of nodes.
         //Each node also contains a method, getData() that returns a String
         //Of their start, end, distance, cost, time. Via graph.get(key).getData()
-        HashMap<String, Node> graph = new HashMap<>();
+        HashMap<String, Vertex> graph = new HashMap<>();
 
         //Creation of all nodes. Nodes are just names for now, they contain null edges.
         Scanner sc = new Scanner(new File(nodeFileName));
@@ -48,7 +48,7 @@ public class MyGraph {
 
         while (sc.hasNext()) {
             start = sc.nextLine();
-            graph.put(start, new Node(start));
+            graph.put(start, new Vertex(start));
         }
 
         //Read in the edges file. Edges are added to nodes/
@@ -84,17 +84,17 @@ public class MyGraph {
     }
 
     //Recursive
-    public static Node[] distanceTrip(Node start, Node end) {
+    public static Vertex[] distanceTrip(Vertex start, Vertex end) {
         return null;
     }
 
     //Recursive
-    public static Node[] timeTrip(Node start, Node end) {
+    public static Vertex[] timeTrip(Vertex start, Vertex end) {
         return null;
     }
 
     //Recursive
-    public static Node[] costTrip(Node start, Node end) {
+    public static Vertex[] costTrip(Vertex start, Vertex end) {
         return null;
     }
 
