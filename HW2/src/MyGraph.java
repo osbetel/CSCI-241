@@ -1,101 +1,74 @@
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.HashMap;
+import java.util.*;
+import java.io.*;
 import java.util.Scanner;
-import java.util.Set;
 
 /**
- * @author Andrew Nguyen & Sam Tang
- * @since 02 Feb 2017
- *
- * CSCI 241, WWU - Professor Ahmed, Winter 2017
+ * A representation of a graph.
+ * Assumes that we do not have negative cost edges in the graph.
+ * Add your name here: 
  */
 public class MyGraph {
+	private ArrayList vertices;
+	private ArrayList edges;
 
-    //HashMap appears to be the best case.
-    public HashMap<String, Vertex> graph;
+	/**
+	 *
+	 * @param vertexFileName
+	 * @return
+	 */
+   	public static Collection<String> loadVertices(String vertexFileName) {
+   		ArrayList <String> vertices = new ArrayList<String>();
+		// Your code here
+        return vertices;   
+   	}
 
-    /**
-     * Constructor for MyGraph
-     * @param nodeFileName filename of nodes
-     * @param edgeFileName filename of edges (start, end, distance, time, cost)
-     */
-    public MyGraph(String nodeFileName, String edgeFileName) {
-        //try-catch because readInputData() throws a FNF Exception
-        try {
-            graph = readInputData(nodeFileName, edgeFileName);
-        } catch (FileNotFoundException err) {
-            System.out.println(err + "\n^^Call to MyGraph constructor.");
-        }
-    }
+   	public static Collection<String> loadEdges(String edgeFileName) {
+        ArrayList <String> edge = new ArrayList<String>();
+        // Your code here          
+        return edge;   
+   	}
+      
+   	public static void displayVertices(Collection<String> vertex) {
+   	    // YOUR CODE HERE               
+        return;			   
+   	}
+         
+   	public static void displayEdges(Collection<String> edge) {
+		// YOUR CODE HERE                 
+        return;   
+   	}
 
-    /**
-     * Method to read input files for nodes and edges, and then creates and returns a graph (HashMap representation)
-     * @param nodeFileName Passed in from the constructor, filename containing nodes
-     * @param edgeFileName Passed in from constructor, filename containing edges
-     * @return Returns a graph to the constructor, which sets it as this object's graph member
-     * @throws FileNotFoundException Self-explanatory
-     */
-    private static HashMap<String, Vertex> readInputData(String nodeFileName, String edgeFileName) throws FileNotFoundException {
-        //Creation of the graph, represented via a hashmap of nodes.
-        //Each node also contains a method, getData() that returns a String
-        //Of their start, end, distance, cost, time. Via graph.get(key).getData()
-        HashMap<String, Vertex> graph = new HashMap<>();
+   	public static void displayGraph(Collection<String> vertex, Collection<String> edge) {
+		// YOUR CODE HERE                 
+        return;   
+   	}
 
-        //Creation of all nodes. Nodes are just names for now, they contain null edges.
-        Scanner sc = new Scanner(new File(nodeFileName));
-        String start;
-
-        while (sc.hasNext()) {
-            start = sc.nextLine();
-            graph.put(start, new Vertex(start));
-        }
-
-        //Read in the edges file. Edges are added to nodes/
-        sc = new Scanner(new File(edgeFileName));
-        String end; int distance, time, cost;
-
-        while (sc.hasNext()) {
-            start = sc.nextLine();
-            end = sc.nextLine();
-            distance = Integer.parseInt(sc.nextLine());
-            time = Integer.parseInt(sc.nextLine());
-            cost = Integer.parseInt(sc.nextLine());
-
-            //edges are added to nodes via addEdge(start, end, d, t, c);
-            graph.get(start).addEdge(graph.get(start), graph.get(end), distance, time, cost);
-        }
-        return graph;
-    }
-
-    /**
-     * Override of toString().
-     * @return Returns a big, multi-line string to be printed that shows all info in this format:
-     * NodeName: [Start --> End (distance, time, cost), ...]
-     */
-    public String toString() {
-        String result = "";
-        Set<String> keys = graph.keySet();
-        for (String str : keys) {
-//            System.out.println(graph.get(str));
-            result += (graph.get(str).toString() + "\n");
-        }
-        return (result);
-    }
-
-    //Recursive
-    public static Vertex[] distanceTrip(Vertex start, Vertex end) {
-        return null;
-    }
-
-    //Recursive
-    public static Vertex[] timeTrip(Vertex start, Vertex end) {
-        return null;
-    }
-
-    //Recursive
-    public static Vertex[] costTrip(Vertex start, Vertex end) {
-        return null;
-    }
-
+         
+   	public static Collection<String> findAdjacentVertices(String vertex) {
+        // YOUR CODE HERE
+//        return adjVertices;
+		return null;
+   	}
+         	 
+   	public static int[] checkIsAdjacent(String a, String b) {
+		int [] value = {-1, 0};
+		// YOUR CODE HERE
+        return value;   
+   	}
+   
+   	public static int findShortestRoute(String start_point, String end_point, List<String> route) {
+   	    // YOUR CODE HERE
+          return 0;   
+   	}
+      
+      
+   	public static int findCheapestRoute(String start_point, String end_point, List<String> route) {
+   	    // YOUR CODE HERE
+          return 0;   
+   	}
+      
+   	public static int findFastestRoute(String start_point, String end_point, List<String> route) {
+   	    // YOUR CODE HERE
+        return 0;   
+   	}
 }

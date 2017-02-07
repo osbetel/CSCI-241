@@ -1,5 +1,5 @@
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedList;
 
 /**
  * @author Andrew Nguyen & Sam Tang
@@ -9,18 +9,18 @@ import java.util.LinkedList;
  */
 public class Vertex {
     private String name;
-    private LinkedList<Edge> edges;
+    private ArrayList<Edge> edges;
 
 
 
-    public Vertex(String name, LinkedList<Edge> edges) {
+    public Vertex(String name, ArrayList<Edge> edges) {
         this.name = name;
         this.edges = edges;
     }
 
     public Vertex(String name) {
         this.name = name;
-        edges = new LinkedList<>();
+        edges = new ArrayList<>();
     }
 
     public void addEdge(Vertex start, Vertex end, int distance, int time, int cost) {

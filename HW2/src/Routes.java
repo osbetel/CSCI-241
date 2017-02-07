@@ -9,6 +9,17 @@ import java.io.FileNotFoundException;
 public class Routes {
 
     public static void main(String[] args) {
+        /*
+        check number of arguments, should be executable from the terminal
+        read vertex files and edge files
+        vertex = graph.readVertex() etc...
+        displayVertices()
+        edges = graph.readEdges() etc...
+        displayEdges()
+         */
+
+
+
         //Routes.java is the main class
 
 //        MyGraph travelMap = new MyGraph();
@@ -24,7 +35,8 @@ public class Routes {
 
     //TestMethod
     public static void testGraphInstantiation() throws FileNotFoundException {
-        MyGraph graph = new MyGraph("vertex.txt", "edge.txt");
+        //Deprecated test
+        DeprecatedMyGraph graph = new DeprecatedMyGraph("vertex.txt", "edge.txt");
         System.out.println(graph.toString());
 
     }
