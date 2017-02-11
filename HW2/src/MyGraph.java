@@ -8,66 +8,83 @@ import java.util.Scanner;
  * Add your name here: 
  */
 public class MyGraph {
-	private ArrayList vertices;
-	private ArrayList edges;
+	private ArrayList<Vertex> vertices;
 
 	/**
 	 *
 	 * @param vertexFileName
 	 * @return
 	 */
-   	public static Collection<String> loadVertices(String vertexFileName) {
-   		ArrayList <String> vertices = new ArrayList<String>();
-		// Your code here
-        return vertices;   
+   	public static Collection<Vertex> loadVertices(String vertexFileName) {
+   		ArrayList<Vertex> vertexList = new ArrayList<>();
+
+		try {
+			Scanner sc = new Scanner(new File(vertexFileName));
+			String start;
+			while (sc.hasNextLine()) {
+				start = sc.nextLine();
+				vertexList.add(new Vertex(start));
+			}
+		} catch (FileNotFoundException err) {
+			System.out.println("Error in loadVertices()\n" + err);
+		}
+        return vertexList;
    	}
 
-   	public static Collection<String> loadEdges(String edgeFileName) {
-        ArrayList <String> edge = new ArrayList<String>();
+   	public static Collection<Edge> loadEdges(Edge edgeFileName) {
+        ArrayList <Edge> edge = new ArrayList<>();
         // Your code here          
         return edge;   
    	}
       
-   	public static void displayVertices(Collection<String> vertex) {
+   	public static void displayVertices(Collection<Vertex> vertex) {
    	    // YOUR CODE HERE               
         return;			   
    	}
          
-   	public static void displayEdges(Collection<String> edge) {
+   	public static void displayEdges(Collection<Edge> edge) {
 		// YOUR CODE HERE                 
         return;   
    	}
 
-   	public static void displayGraph(Collection<String> vertex, Collection<String> edge) {
+   	public static void displayGraph(Collection<Vertex> vertex, Collection<Edge> edge) {
 		// YOUR CODE HERE                 
-        return;   
+        return;
    	}
 
-         
-   	public static Collection<String> findAdjacentVertices(String vertex) {
+	//NOTE: THE PARAMETER DATA TYPES MAY BE CHANGED TO VERTEX LATER ON
+	public static Collection<Vertex> findAdjacentVertices(String vertex) {
         // YOUR CODE HERE
 //        return adjVertices;
 		return null;
    	}
-         	 
-   	public static int[] checkIsAdjacent(String a, String b) {
-		int [] value = {-1, 0};
-		// YOUR CODE HERE
-        return value;   
+
+	//NOTE: THE PARAMETER DATA TYPES MAY BE CHANGED TO VERTEX LATER ON
+	public static boolean checkIsAdjacent(String startVertex, String endVertex) {
+   		/*
+   		Just look at this bs. checkIsAdjacent returns an integer array? What the fuck?
+   		It's 180%, absolutely, without a doubt, should be a boolean return.
+   		 */
+//   	public static int[] checkIsAdjacent(String startVertex, String endVertex) {
+//		int [] value = {-1, 0};
+//        return value;
+		return false;
    	}
-   
-   	public static int findShortestRoute(String start_point, String end_point, List<String> route) {
+
+   	//NOTE: THE PARAMETER DATA TYPES MAY BE CHANGED TO VERTEX LATER ON
+   	public static int findShortestRoute(String startVertex, String endVertex, List<String> route) {
    	    // YOUR CODE HERE
           return 0;   
    	}
-      
-      
-   	public static int findCheapestRoute(String start_point, String end_point, List<String> route) {
+
+   	//NOTE: THE PARAMETER DATA TYPES MAY BE CHANGED TO VERTEX LATER ON
+   	public static int findCheapestRoute(String startVertex, String endVertex, List<String> route) {
    	    // YOUR CODE HERE
           return 0;   
    	}
-      
-   	public static int findFastestRoute(String start_point, String end_point, List<String> route) {
+
+   	//NOTE: THE PARAMETER DATA TYPES MAY BE CHANGED TO VERTEX LATER ON
+   	public static int findFastestRoute(String startVertex, String endVertex, List<String> route) {
    	    // YOUR CODE HERE
         return 0;   
    	}
