@@ -35,8 +35,12 @@ public class Routes {
 
     //TestMethod
     public static void testGraphInstantiation() throws FileNotFoundException {
+        String vertexFileName = "vertex.txt";
+        String edgeFileName = "edge.txt";
+
         //Deprecated test
-        DeprecatedMyGraph graph = new DeprecatedMyGraph("vertex.txt", "edge.txt");
+//        DeprecatedMyGraph graph = new DeprecatedMyGraph(vertexFileName, edgeFileName);
+        MyGraph graph = new MyGraph(vertexFileName, edgeFileName);
         System.out.println(graph.toString());
 
     }

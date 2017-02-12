@@ -10,32 +10,88 @@ import java.util.Scanner;
 public class MyGraph {
 	private ArrayList<Vertex> vertices;
 
+	public MyGraph(String vertexFileName, String edgeFileName) {
+		vertices = new ArrayList<>();
+		loadVertices(vertexFileName);
+		loadEdges(edgeFileName);
+	}
+
+	public String toString() {
+		String result = "";
+		for (int i = 0; i < vertices.size(); i++) {
+			result += vertices.get(i).toString();
+			result += "\n";
+		}
+		return result;
+	}
+
 	/**
 	 *
 	 * @param vertexFileName
 	 * @return
 	 */
-   	public static Collection<Vertex> loadVertices(String vertexFileName) {
-   		ArrayList<Vertex> vertexList = new ArrayList<>();
+   	public Collection<Vertex> loadVertices(String vertexFileName) {
+//   		ArrayList<Vertex> vertexList = new ArrayList<>();
 
 		try {
 			Scanner sc = new Scanner(new File(vertexFileName));
 			String start;
 			while (sc.hasNextLine()) {
 				start = sc.nextLine();
-				vertexList.add(new Vertex(start));
+				vertices.add(new Vertex(start));
 			}
 		} catch (FileNotFoundException err) {
 			System.out.println("Error in loadVertices()\n" + err);
 		}
-        return vertexList;
+        return vertices;
    	}
 
-   	public static Collection<Edge> loadEdges(Edge edgeFileName) {
-        ArrayList <Edge> edge = new ArrayList<>();
-        // Your code here          
-        return edge;   
+   	public Collection<Edge> loadEdges(String edgeFileName) {
+   		/*
+   		Edges are read in the format:
+   			startVertex
+   			endVertex
+   			distance
+   			time
+   			cost
+   		 */
+        ArrayList <Edge> edgeList = new ArrayList<>();
+
+        try {
+        	Scanner sc = new Scanner(new File(edgeFileName));
+        	String start, end; int distance, time, cost;
+			while(sc.hasNextLine()) {
+				start = sc.nextLine();
+				end = sc.nextLine();
+				distance = Integer.parseInt(sc.nextLine());
+				time = Integer.parseInt(sc.nextLine());
+				cost = Integer.parseInt(sc.nextLine());
+				vertices.get(vertexSearchIndex(start)).addEdge(
+						vertexSearch(start), vertexSearch(end), distance, time, cost);
+			}
+		} catch (FileNotFoundException err) {
+			System.out.println("Error in loadEdges()\n" + err);
+		}
+        return edgeList;
    	}
+
+   	public int vertexSearchIndex(String targetVertex) {
+   		for (int i = 0; i < vertices.size(); i++) {
+   		    if (vertices.get(i).getName().equals(targetVertex)) {
+   		    	return i;
+			}
+   		}
+   		return -1;
+	}
+
+	public Vertex vertexSearch(String targetVertex) {
+   		for (Vertex v : vertices) {
+   		    if (v.getName().equals(targetVertex)) {
+   		    	return v;
+			}
+   		}
+   		return null;
+	}
       
    	public static void displayVertices(Collection<Vertex> vertex) {
    	    // YOUR CODE HERE               
