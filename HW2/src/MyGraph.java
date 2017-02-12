@@ -122,7 +122,8 @@ public class MyGraph {
 			}
 		}
    	}
-
+	
+	//Graphic representation?
    	public static void displayGraph(Collection<Vertex> vertex, Collection<Edge> edge) {
 		// YOUR CODE HERE                 
         return;
@@ -140,6 +141,8 @@ public class MyGraph {
    	}
 
 	//NOTE: THE PARAMETER DATA TYPES MAY BE CHANGED TO VERTEX LATER ON
+	/*checkIsAdjacent does not return boolean but an array of intergers
+	that contain distance, time, and price*/
 	public boolean checkIsAdjacent(String startVertex, String endVertex) {
 		for (Edge e : vertexSearch(startVertex).getEdges()) {
 		    if (e.getStart().equals(startVertex) && e.getEnd().equals(endVertex)) {
@@ -149,11 +152,20 @@ public class MyGraph {
 
 		return false;
    	}
+	
+	/*Possible use of recursion for next 3 functions
+	Explore the graph starting at startVertex
+	Check all possible routes through recursion
+	Stop recursing when hits endVertex
+	How to return cheapest price with recursion?
+	How to use List<String> route? 
+	Does it already contain shortest route? Or need to compare to all other possible routes?*/
+	
 
    	//NOTE: THE PARAMETER DATA TYPES MAY BE CHANGED TO VERTEX LATER ON
    	public static int findShortestRoute(String startVertex, String endVertex, List<String> route) {
-   	    // YOUR CODE HERE
-          return 0;   
+            // YOUR CODE HER  
+       	  return 0;   
    	}
 
    	//NOTE: THE PARAMETER DATA TYPES MAY BE CHANGED TO VERTEX LATER ON
