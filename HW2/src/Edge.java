@@ -31,6 +31,14 @@ public class Edge {
 
     }
 
+    public String getStart() {
+        return start.getName();
+    }
+
+    public String getEnd() {
+        return end.getName();
+    }
+
     /**
      * Override of toString()
      * @return Returns edge information in the format:

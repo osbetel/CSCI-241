@@ -41,8 +41,9 @@ public class Routes {
         //Deprecated test
 //        DeprecatedMyGraph graph = new DeprecatedMyGraph(vertexFileName, edgeFileName);
         MyGraph graph = new MyGraph(vertexFileName, edgeFileName);
-        System.out.println(graph.toString());
-
+//        System.out.println(graph.toString());
+//        System.out.println(graph.findAdjacentVertices("ATL").toString());
+//        System.out.println(graph.checkIsAdjacent("IAD","ATL"));
     }
 
 }

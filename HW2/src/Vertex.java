@@ -35,6 +35,10 @@ public class Vertex {
         return name;
     }
 
+    public ArrayList<Edge> getEdges() {
+        return edges;
+    }
+
     /**
      * Override of toString()
      * @return Returns the name of this Node and an array of all its edges as a String.

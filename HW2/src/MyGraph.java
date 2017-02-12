@@ -92,15 +92,35 @@ public class MyGraph {
    		}
    		return null;
 	}
-      
-   	public static void displayVertices(Collection<Vertex> vertex) {
-   	    // YOUR CODE HERE               
-        return;			   
+
+	/**
+	 * Prints out a list of all the existing vertices in the graph.
+	 * Recommended to use the toString() method instead as it has the functionality of both
+	 * the displayVertices() and displayEdges() methods.
+	 */
+   	public void displayVertices() {
+   		String[] str = new String[vertices.size()];
+   		int i = 0;
+		for (Vertex v : vertices) {
+			str[i] = v.getName();
+			i++;
+		}
+		System.out.println(Arrays.toString(str));
    	}
-         
-   	public static void displayEdges(Collection<Edge> edge) {
-		// YOUR CODE HERE                 
-        return;   
+
+	/**
+	 * Prints out a list of all the existing edges in the graph, as well as their information.
+	 * Recommended to use the toString() method instead as it has the functionality of both
+	 * the displayVertices() and displayEdges() methods.
+	 */
+   	public void displayEdges() {
+   		ArrayList<Edge> edges;
+        for (Vertex v : vertices) {
+        	edges = v.getEdges();
+        	for (Edge e : edges) {
+				System.out.println(e.toString());
+			}
+		}
    	}
 
    	public static void displayGraph(Collection<Vertex> vertex, Collection<Edge> edge) {
@@ -109,21 +129,24 @@ public class MyGraph {
    	}
 
 	//NOTE: THE PARAMETER DATA TYPES MAY BE CHANGED TO VERTEX LATER ON
-	public static Collection<Vertex> findAdjacentVertices(String vertex) {
-        // YOUR CODE HERE
-//        return adjVertices;
-		return null;
+	public ArrayList<Vertex> findAdjacentVertices(String vertex) {
+   		Vertex startVertex = vertexSearch(vertex);
+   		ArrayList<Vertex> adjacent = new ArrayList<>();
+
+   		for (Edge e : startVertex.getEdges()) {
+   		    adjacent.add(vertexSearch(e.getEnd()));
+   		}
+		return adjacent;
    	}
 
 	//NOTE: THE PARAMETER DATA TYPES MAY BE CHANGED TO VERTEX LATER ON
-	public static boolean checkIsAdjacent(String startVertex, String endVertex) {
-   		/*
-   		Just look at this bs. checkIsAdjacent returns an integer array? What the fuck?
-   		It's 180%, absolutely, without a doubt, should be a boolean return.
-   		 */
-//   	public static int[] checkIsAdjacent(String startVertex, String endVertex) {
-//		int [] value = {-1, 0};
-//        return value;
+	public boolean checkIsAdjacent(String startVertex, String endVertex) {
+		for (Edge e : vertexSearch(startVertex).getEdges()) {
+		    if (e.getStart().equals(startVertex) && e.getEnd().equals(endVertex)) {
+		    	return true;
+			}
+		}
+
 		return false;
    	}
 
