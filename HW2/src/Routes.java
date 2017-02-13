@@ -46,6 +46,7 @@ public class Routes {
 
         MyGraph mapGraph = new MyGraph(vertexFileName, edgeFileName);
         System.out.println(mapGraph.toString());
+
     }
 
 }

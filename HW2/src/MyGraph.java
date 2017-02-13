@@ -1,8 +1,6 @@
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.HashMap;
-import java.util.Scanner;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author Andrew Nguyen & Sam Tang
@@ -13,7 +11,7 @@ import java.util.Set;
 public class MyGraph {
 
     //HashMap appears to be the best case.
-    public HashMap<String, Vertex> graph;
+    private HashMap<String, Vertex> graph;
 
     /**
      * Constructor for DeprecatedMyGraph
@@ -78,19 +76,48 @@ public class MyGraph {
         return (result);
     }
 
-    //Recursive
-    public static Vertex[] distanceTrip(Vertex start, Vertex end) {
+    public HashMap<String, Vertex> getGraph() {
+        return graph;
+    }
+
+    private Vertex[] djikstraAlg(Vertex start, Vertex end) {
+        //Calculate every route as per djikstra's algo
+        //return route for start and end
         return null;
     }
 
     //Recursive
-    public static Vertex[] timeTrip(Vertex start, Vertex end) {
-        return null;
+    public Vertex[] distanceTrip(Vertex start, Vertex end) {
+        return djikstraAlg(start, end);
+
     }
 
     //Recursive
-    public static Vertex[] costTrip(Vertex start, Vertex end) {
-        return null;
+    public Vertex[] timeTrip(Vertex start, Vertex end) {
+        return djikstraAlg(start, end);
+    }
+
+    //Recursive
+    public Vertex[] costTrip(Vertex start, Vertex end) {
+        return djikstraAlg(start, end);
+
+    }
+
+    public int findShortestRoute(String startVertex, String endVertex) {
+        ArrayList<Integer> distance = new ArrayList<>();
+        return 0;
+    }
+
+    //NOTE: THE PARAMETER DATA TYPES MAY BE CHANGED TO VERTEX LATER ON
+    public int findCheapestRoute(String startVertex, String endVertex) {
+        ArrayList<Integer> cost = new ArrayList<>();
+        return 0;
+    }
+
+    //NOTE: THE PARAMETER DATA TYPES MAY BE CHANGED TO VERTEX LATER ON
+    public int findFastestRoute(String startVertex, String endVertex) {
+        ArrayList<Integer> time = new ArrayList<>();
+        return 0;
     }
 
 }
