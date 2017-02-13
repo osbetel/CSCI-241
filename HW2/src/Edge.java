@@ -8,6 +8,8 @@ public class Edge {
     private String name;
     private Vertex start;
     private Vertex end;
+    private boolean isTwoWay; //True if the Edge goes both ways
+
     private int distance;
     private int time;
     private int cost;

@@ -22,7 +22,7 @@ public class Routes {
 
         //Routes.java is the main class
 
-//        MyGraph travelMap = new MyGraph();
+//        DeprecatedMyGraph travelMap = new DeprecatedMyGraph();
 //        DrawGraph paint = new DrawGraph(travelMap);
 
         try {
@@ -30,7 +30,6 @@ public class Routes {
         } catch (FileNotFoundException e) {
             System.out.println(e);
         }
-
     }
 
     //TestMethod
@@ -39,11 +38,14 @@ public class Routes {
         String edgeFileName = "edge.txt";
 
         //Deprecated test
+//        MyGraph graph = new MyGraph(vertexFileName, edgeFileName);
 //        DeprecatedMyGraph graph = new DeprecatedMyGraph(vertexFileName, edgeFileName);
-        MyGraph graph = new MyGraph(vertexFileName, edgeFileName);
 //        System.out.println(graph.toString());
 //        System.out.println(graph.findAdjacentVertices("ATL").toString());
 //        System.out.println(graph.checkIsAdjacent("IAD","ATL"));
+
+        MyGraph mapGraph = new MyGraph(vertexFileName, edgeFileName);
+        System.out.println(mapGraph.toString());
     }
 
 }

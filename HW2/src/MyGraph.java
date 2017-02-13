@@ -1,182 +1,96 @@
-import java.util.*;
-import java.io.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.HashMap;
 import java.util.Scanner;
+import java.util.Set;
 
 /**
- * A representation of a graph.
- * Assumes that we do not have negative cost edges in the graph.
- * Add your name here: 
+ * @author Andrew Nguyen & Sam Tang
+ * @since 02 Feb 2017
+ *
+ * CSCI 241, WWU - Professor Ahmed, Winter 2017
  */
 public class MyGraph {
-	private ArrayList<Vertex> vertices;
 
-	public MyGraph(String vertexFileName, String edgeFileName) {
-		vertices = new ArrayList<>();
-		loadVertices(vertexFileName);
-		loadEdges(edgeFileName);
-	}
+    //HashMap appears to be the best case.
+    public HashMap<String, Vertex> graph;
 
-	public String toString() {
-		String result = "";
-		for (int i = 0; i < vertices.size(); i++) {
-			result += vertices.get(i).toString();
-			result += "\n";
-		}
-		return result;
-	}
+    /**
+     * Constructor for DeprecatedMyGraph
+     * @param vertexFileName filename of nodes
+     * @param edgeFileName filename of edges (start, end, distance, time, cost)
+     */
+    public MyGraph(String vertexFileName, String edgeFileName) {
+        graph = new HashMap<>();
 
-	/**
-	 *
-	 * @param vertexFileName
-	 * @return
-	 */
-   	public Collection<Vertex> loadVertices(String vertexFileName) {
-//   		ArrayList<Vertex> vertexList = new ArrayList<>();
-
-		try {
-			Scanner sc = new Scanner(new File(vertexFileName));
-			String start;
-			while (sc.hasNextLine()) {
-				start = sc.nextLine();
-				vertices.add(new Vertex(start));
-			}
-		} catch (FileNotFoundException err) {
-			System.out.println("Error in loadVertices()\n" + err);
-		}
-        return vertices;
-   	}
-
-   	public Collection<Edge> loadEdges(String edgeFileName) {
-   		/*
-   		Edges are read in the format:
-   			startVertex
-   			endVertex
-   			distance
-   			time
-   			cost
-   		 */
-        ArrayList <Edge> edgeList = new ArrayList<>();
-
+        //try-catch because readInputData() throws a FNF Exception
         try {
-        	Scanner sc = new Scanner(new File(edgeFileName));
-        	String start, end; int distance, time, cost;
-			while(sc.hasNextLine()) {
-				start = sc.nextLine();
-				end = sc.nextLine();
-				distance = Integer.parseInt(sc.nextLine());
-				time = Integer.parseInt(sc.nextLine());
-				cost = Integer.parseInt(sc.nextLine());
-				vertices.get(vertexSearchIndex(start)).addEdge(
-						vertexSearch(start), vertexSearch(end), distance, time, cost);
-			}
-		} catch (FileNotFoundException err) {
-			System.out.println("Error in loadEdges()\n" + err);
-		}
-        return edgeList;
-   	}
+            loadVertices(vertexFileName);
+            loadEdges(edgeFileName);
+        } catch (FileNotFoundException err) {
+            System.out.println(err + "\n^^Call to DeprecatedMyGraph constructor.");
+        }
+    }
 
-   	public int vertexSearchIndex(String targetVertex) {
-   		for (int i = 0; i < vertices.size(); i++) {
-   		    if (vertices.get(i).getName().equals(targetVertex)) {
-   		    	return i;
-			}
-   		}
-   		return -1;
-	}
+    private void loadVertices(String vertexFileName) throws FileNotFoundException {
+        //Each node also contains a method, getData() that returns a String
+        //Of their start, end, distance, cost, time. Via graph.get(key).getData()
+        //Creation of all nodes. Nodes are just names for now, they contain null edges.
+        Scanner sc = new Scanner(new File(vertexFileName));
+        String start;
 
-	public Vertex vertexSearch(String targetVertex) {
-   		for (Vertex v : vertices) {
-   		    if (v.getName().equals(targetVertex)) {
-   		    	return v;
-			}
-   		}
-   		return null;
-	}
+        while (sc.hasNext()) {
+            start = sc.nextLine();
+            graph.put(start, new Vertex(start));
+        }
+    }
 
-	/**
-	 * Prints out a list of all the existing vertices in the graph.
-	 * Recommended to use the toString() method instead as it has the functionality of both
-	 * the displayVertices() and displayEdges() methods.
-	 */
-   	public void displayVertices() {
-   		String[] str = new String[vertices.size()];
-   		int i = 0;
-		for (Vertex v : vertices) {
-			str[i] = v.getName();
-			i++;
-		}
-		System.out.println(Arrays.toString(str));
-   	}
+    private void loadEdges(String edgeFileName) throws FileNotFoundException {
+        //Read in the edges file. Edges are added to nodes/
+        Scanner sc = new Scanner(new File(edgeFileName));
+        String start;
+        String end; int distance, time, cost;
 
-	/**
-	 * Prints out a list of all the existing edges in the graph, as well as their information.
-	 * Recommended to use the toString() method instead as it has the functionality of both
-	 * the displayVertices() and displayEdges() methods.
-	 */
-   	public void displayEdges() {
-   		ArrayList<Edge> edges;
-        for (Vertex v : vertices) {
-        	edges = v.getEdges();
-        	for (Edge e : edges) {
-				System.out.println(e.toString());
-			}
-		}
-   	}
-	
-	//Graphic representation?
-   	public static void displayGraph(Collection<Vertex> vertex, Collection<Edge> edge) {
-		// YOUR CODE HERE                 
-        return;
-   	}
+        while (sc.hasNext()) {
+            start = sc.nextLine();
+            end = sc.nextLine();
+            distance = Integer.parseInt(sc.nextLine());
+            time = Integer.parseInt(sc.nextLine());
+            cost = Integer.parseInt(sc.nextLine());
 
-	//NOTE: THE PARAMETER DATA TYPES MAY BE CHANGED TO VERTEX LATER ON
-	public ArrayList<Vertex> findAdjacentVertices(String vertex) {
-   		Vertex startVertex = vertexSearch(vertex);
-   		ArrayList<Vertex> adjacent = new ArrayList<>();
+            //edges are added to nodes via addEdge(start, end, d, t, c);
+            graph.get(start).addEdge(graph.get(start), graph.get(end), distance, time, cost);
+        }
+    }
 
-   		for (Edge e : startVertex.getEdges()) {
-   		    adjacent.add(vertexSearch(e.getEnd()));
-   		}
-		return adjacent;
-   	}
+    /**
+     * Override of toString().
+     * @return Returns a big, multi-line string to be printed that shows all info in this format:
+     * NodeName: [Start --> End (distance, time, cost), ...]
+     */
+    public String toString() {
+        String result = "";
+        Set<String> keys = graph.keySet();
+        for (String str : keys) {
+//            System.out.println(graph.get(str));
+            result += (graph.get(str).toString() + "\n");
+        }
+        return (result);
+    }
 
-	//NOTE: THE PARAMETER DATA TYPES MAY BE CHANGED TO VERTEX LATER ON
-	/*checkIsAdjacent does not return boolean but an array of intergers
-	that contain distance, time, and price*/
-	public boolean checkIsAdjacent(String startVertex, String endVertex) {
-		for (Edge e : vertexSearch(startVertex).getEdges()) {
-		    if (e.getStart().equals(startVertex) && e.getEnd().equals(endVertex)) {
-		    	return true;
-			}
-		}
+    //Recursive
+    public static Vertex[] distanceTrip(Vertex start, Vertex end) {
+        return null;
+    }
 
-		return false;
-   	}
-	
-	/*Possible use of recursion for next 3 functions
-	Explore the graph starting at startVertex
-	Check all possible routes through recursion
-	Stop recursing when hits endVertex
-	How to return cheapest price with recursion?
-	How to use List<String> route? 
-	Does it already contain shortest route? Or need to compare to all other possible routes?*/
-	
+    //Recursive
+    public static Vertex[] timeTrip(Vertex start, Vertex end) {
+        return null;
+    }
 
-   	//NOTE: THE PARAMETER DATA TYPES MAY BE CHANGED TO VERTEX LATER ON
-   	public static int findShortestRoute(String startVertex, String endVertex, List<String> route) {
-            // YOUR CODE HER  
-       	  return 0;   
-   	}
+    //Recursive
+    public static Vertex[] costTrip(Vertex start, Vertex end) {
+        return null;
+    }
 
-   	//NOTE: THE PARAMETER DATA TYPES MAY BE CHANGED TO VERTEX LATER ON
-   	public static int findCheapestRoute(String startVertex, String endVertex, List<String> route) {
-   	    // YOUR CODE HERE
-          return 0;   
-   	}
-
-   	//NOTE: THE PARAMETER DATA TYPES MAY BE CHANGED TO VERTEX LATER ON
-   	public static int findFastestRoute(String startVertex, String endVertex, List<String> route) {
-   	    // YOUR CODE HERE
-        return 0;   
-   	}
 }
