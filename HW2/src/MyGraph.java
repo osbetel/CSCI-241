@@ -14,7 +14,6 @@ public class MyGraph {
     private HashMap<String, Vertex> graph;
 
     /**
-     * Constructor for DeprecatedMyGraph
      * @param vertexFileName filename of nodes
      * @param edgeFileName filename of edges (start, end, distance, time, cost)
      */
