@@ -14,6 +14,7 @@ public class MyGraph {
     private HashMap<String, Vertex> graph;
 
     /**
+     * Constructor for MyGraph
      * @param vertexFileName filename of nodes
      * @param edgeFileName filename of edges (start, end, distance, time, cost)
      */
@@ -74,68 +75,64 @@ public class MyGraph {
         }
         return (result);
     }
+    
+    public Vertex get(String str) {
+         Vertex v = graph.get(str);
+         return v;
+    }
 
     public HashMap<String, Vertex> getGraph() {
         return graph;
     }
-    
-    public ArrayList<Vertex> findAdjacentVertices(Vertex v){
-         ArrayList<Vertex> adjacent = new ArrayList<>();
-         for(Edge e : graph.get(v).getEdges()){
-            adjacent.add(graph.get(e.getEnd()));
-         }
-         return adjacent;
-    }
-    
-    public boolean checkIsAdjacent(Vertex start, Vertex end){
-        for(Edge e : graph.get(start).getEdges()){
-            if(e.getStart().equals(start) && e.getEnd().equals(end)){
-               return true;
-            }
-        }
+      
+    public ArrayList<Vertex> djikstraAlg(Vertex start, Vertex end) {
         
-        return false;
-    }
-
-    private Vertex[] djikstraAlg(Vertex start, Vertex end) {
         //Calculate every route as per djikstra's algo
         //return route for start and end
         
-        //Method incomplete needs testing
-        //Need to add a weight
-        
-        Vertex route[] = new Vertex[graph.size()];
-        Set keys = graph.keySet();
-        route[0] = start;
+        ArrayList<Vertex> route = new ArrayList<>();
+        route.add(start);
         Vertex curr = start;
-        if(checkIsAdjacent(start, end)){
-               route[1] = end;
+        int cost = 0;
+        while(!curr.known){
+            int minimum = Integer.MAX_VALUE;
+            curr.known = true; 
+            if(curr == end){
+               route.add(end);
+               return route;
+            }         
+            else{
+               for(Edge e : curr.getEdges()){
+                  if(e.cost < minimum){
+                     minimum = e.cost;
+                     if(!graph.get(e.getEnd()).known){
+                        curr = graph.get(e.getEnd());
+                     }
+                  }
+               }
+               cost += minimum;
+               route.add(curr);
             }
-        else{
-            ArrayList<Vertex> adjacent = findAdjacentVertices(curr);
-            for(int i = 0; i < adjacent.size(); i++){
-               curr = adjacent.get(i);
-               route[i + 1] = djikstraAlg(curr, end)[0];
-            }
+            
         }
         return route;
-    }
-
-
+        }
+        
+   
     //Recursive
     public Vertex[] distanceTrip(Vertex start, Vertex end) {
-        return djikstraAlg(start, end);
+        return null;
 
     }
 
     //Recursive
     public Vertex[] timeTrip(Vertex start, Vertex end) {
-        return djikstraAlg(start, end);
+        return null;
     }
 
     //Recursive
     public Vertex[] costTrip(Vertex start, Vertex end) {
-        return djikstraAlg(start, end);
+        return null;
 
     }
 
