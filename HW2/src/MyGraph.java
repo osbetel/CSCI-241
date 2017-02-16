@@ -103,6 +103,7 @@ public class MyGraph {
         //return route for start and end
         
         //Method incomplete needs testing
+        //Need to add a weight
         
         Vertex route[] = new Vertex[graph.size()];
         Set keys = graph.keySet();
