@@ -40,6 +40,19 @@ public class Edge {
     public String getEnd() {
         return end.getName();
     }
+    
+    public int getDistance(){
+        return distance;
+    }
+    
+    public int getTime(){
+        return time;
+    }
+    
+    public int getCost(){
+        return cost;
+    }
+    
 
     /**
      * Override of toString()
