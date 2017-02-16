@@ -26,7 +26,7 @@ public class MyGraph {
             loadVertices(vertexFileName);
             loadEdges(edgeFileName);
         } catch (FileNotFoundException err) {
-            System.out.println(err + "\n^^Call to DeprecatedMyGraph constructor.");
+            System.out.println(err + "\n^^Call to MyGraph constructor.");
         }
     }
 
@@ -89,6 +89,8 @@ public class MyGraph {
         
         //Calculate every route as per djikstra's algo
         //return route for start and end
+        //Calculate weighted values and return the path with the best value
+        //visited to make sure that algorithm doesn't go to already explored vertices
         
         ArrayList<Vertex> route = new ArrayList<>();
         route.add(start);
@@ -97,15 +99,19 @@ public class MyGraph {
         while(!curr.known){
             int minimum = Integer.MAX_VALUE;
             curr.known = true; 
-            if(curr == end){
-               route.add(end);
+            if(curr.getName().equals(end.getName())){
                return route;
             }         
             else{
                for(Edge e : curr.getEdges()){
-                  if(e.cost < minimum){
-                     minimum = e.cost;
-                     if(!graph.get(e.getEnd()).known){
+                  if(e.getEnd().equals(end.getName())){
+                        curr = end;
+                        minimum = e.getCost();
+                        break;
+                     }
+                  if(!graph.get(e.getEnd()).known){
+                     if(e.getCost() < minimum){
+                        minimum = e.getCost();
                         curr = graph.get(e.getEnd());
                      }
                   }
