@@ -9,6 +9,7 @@ import java.util.Arrays;
  */
 public class Vertex {
     private String name;
+    public boolean known;
     private ArrayList<Edge> edges;
 
 
@@ -16,11 +17,13 @@ public class Vertex {
     public Vertex(String name, ArrayList<Edge> edges) {
         this.name = name;
         this.edges = edges;
+        known = false;
     }
 
     public Vertex(String name) {
-        this.name = name;
-        edges = new ArrayList<>();
+         this.name = name;
+         edges = new ArrayList<>();
+         known = false;
     }
 
     public void addEdge(Vertex start, Vertex end, int distance, int time, int cost) {
