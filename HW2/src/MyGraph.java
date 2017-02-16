@@ -79,12 +79,48 @@ public class MyGraph {
     public HashMap<String, Vertex> getGraph() {
         return graph;
     }
+    
+    public ArrayList<Vertex> findAdjacentVertices(Vertex v){
+         ArrayList<Vertex> adjacent = new ArrayList<>();
+         for(Edge e : graph.get(v).getEdges()){
+            adjacent.add(graph.get(e.getEnd()));
+         }
+         return adjacent;
+    }
+    
+    public boolean checkIsAdjacent(Vertex start, Vertex end){
+        for(Edge e : graph.get(start).getEdges()){
+            if(e.getStart().equals(start) && e.getEnd().equals(end)){
+               return true;
+            }
+        }
+        
+        return false;
+    }
 
     private Vertex[] djikstraAlg(Vertex start, Vertex end) {
         //Calculate every route as per djikstra's algo
         //return route for start and end
-        return null;
+        
+        //Method incomplete needs testing
+        
+        Vertex route[] = new Vertex[graph.size()];
+        Set keys = graph.keySet();
+        route[0] = start;
+        Vertex curr = start;
+        if(checkIsAdjacent(start, end)){
+               route[1] = end;
+            }
+        else{
+            ArrayList<Vertex> adjacent = findAdjacentVertices(curr);
+            for(int i = 0; i < adjacent.size(); i++){
+               curr = adjacent.get(i);
+               route[i + 1] = djikstraAlg(curr, end)[0];
+            }
+        }
+        return route;
     }
+
 
     //Recursive
     public Vertex[] distanceTrip(Vertex start, Vertex end) {
