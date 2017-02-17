@@ -9,21 +9,24 @@ import java.util.Arrays;
  */
 public class Vertex {
     private String name;
-    public boolean known;
     private ArrayList<Edge> edges;
+    public int value;
+    public Vertex prev;
 
 
 
     public Vertex(String name, ArrayList<Edge> edges) {
         this.name = name;
         this.edges = edges;
-        known = false;
+        value = 0;
+        prev = null;
     }
 
     public Vertex(String name) {
-         this.name = name;
-         edges = new ArrayList<>();
-         known = false;
+        this.name = name;
+        edges = new ArrayList<>();
+        value = 0;
+        prev = null;
     }
 
     public void addEdge(Vertex start, Vertex end, int distance, int time, int cost) {
@@ -49,6 +52,13 @@ public class Vertex {
      */
     public String toString() {
         return (name + ": " + Arrays.toString(edges.toArray()));
+    }
+
+    public boolean equals(Vertex end){
+        if(name.equals(end.getName())){
+            return true;
+        }
+        return false;
     }
 
 }
