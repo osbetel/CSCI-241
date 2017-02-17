@@ -1,5 +1,6 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.lang.reflect.Array;
 import java.util.*;
 
 /**
@@ -75,88 +76,166 @@ public class MyGraph {
         }
         return (result);
     }
-    
-    public Vertex get(String str) {
-         Vertex v = graph.get(str);
-         return v;
-    }
+
 
     public HashMap<String, Vertex> getGraph() {
         return graph;
     }
-      
-    public ArrayList<Vertex> djikstraAlg(Vertex start, Vertex end) {
-        
-        //Calculate every route as per djikstra's algo
-        //return route for start and end
-        //Calculate weighted values and return the path with the best value
-        //visited to make sure that algorithm doesn't go to already explored vertices
-        
-        ArrayList<Vertex> route = new ArrayList<>();
-        route.add(start);
-        Vertex curr = start;
-        int cost = 0;
-        while(!curr.known){
-            int minimum = Integer.MAX_VALUE;
-            curr.known = true; 
-            if(curr.getName().equals(end.getName())){
-               return route;
-            }         
-            else{
-               for(Edge e : curr.getEdges()){
-                  if(e.getEnd().equals(end.getName())){
-                        curr = end;
-                        minimum = e.getCost();
-                        break;
-                     }
-                  if(!graph.get(e.getEnd()).known){
-                     if(e.getCost() < minimum){
-                        minimum = e.getCost();
-                        curr = graph.get(e.getEnd());
-                     }
-                  }
-               }
-               cost += minimum;
-               route.add(curr);
+
+    private Vertex extractMin(ArrayList<Vertex> vList){
+        Vertex min = new Vertex("min");
+        min.value = Integer.MAX_VALUE;
+        for(Vertex v : vList){
+            if(v.value < min.value){
+                min = v;
+                return min;
             }
-            
+            min = v;
+        }
+        return min;
+    }
+
+    //Recursive
+    public ArrayList<Vertex> distanceTrip(Vertex start) {
+        ArrayList<Vertex> route = new ArrayList<>();
+        ArrayList<Vertex> vertexList = new ArrayList<>();
+        Set<String> keys = graph.keySet();
+        for(Vertex v : vertexList){
+            v.value = Integer.MAX_VALUE;
+        }
+        start.value = 0;
+        for (String str : keys) {
+            vertexList.add(graph.get(str));
+        }
+        while(!vertexList.isEmpty()){
+            Vertex u = extractMin(vertexList);
+            vertexList.remove(u);
+            route.add(u);
+            for(Edge e : u.getEdges()){
+                if(graph.get(e.getEnd()).value > u.value + e.getDistance()){
+                    graph.get(e.getEnd()).value = u.value + e.getDistance();
+                    graph.get(e.getEnd()).prev = u;
+                }
+            }
         }
         return route;
+    }
+
+    //Recursive
+    public ArrayList<Vertex> timeTrip(Vertex start) {
+        ArrayList<Vertex> route = new ArrayList<>();
+        ArrayList<Vertex> vertexList = new ArrayList<>();
+        Set<String> keys = graph.keySet();
+        for(Vertex v : vertexList){
+            v.value = Integer.MAX_VALUE;
         }
-        
-   
-    //Recursive
-    public Vertex[] distanceTrip(Vertex start, Vertex end) {
-        return null;
-
+        start.value = 0;
+        for (String str : keys) {
+            vertexList.add(graph.get(str));
+        }
+        while(!vertexList.isEmpty()){
+            Vertex u = extractMin(vertexList);
+            vertexList.remove(u);
+            route.add(u);
+            for(Edge e : u.getEdges()){
+                if(graph.get(e.getEnd()).value > u.value + e.getTime()){
+                    graph.get(e.getEnd()).value = u.value + e.getTime();
+                    graph.get(e.getEnd()).prev = u;
+                }
+            }
+        }
+        return route;
     }
 
     //Recursive
-    public Vertex[] timeTrip(Vertex start, Vertex end) {
-        return null;
-    }
-
-    //Recursive
-    public Vertex[] costTrip(Vertex start, Vertex end) {
-        return null;
-
+    public ArrayList<Vertex> costTrip(Vertex start) {
+        ArrayList<Vertex> route = new ArrayList<>();
+        ArrayList<Vertex> vertexList = new ArrayList<>();
+        Set<String> keys = graph.keySet();
+        for(Vertex v : vertexList){
+            v.value = Integer.MAX_VALUE;
+        }
+        start.value = 0;
+        for (String str : keys) {
+            vertexList.add(graph.get(str));
+        }
+        while(!vertexList.isEmpty()){
+            Vertex u = extractMin(vertexList);
+            vertexList.remove(u);
+            route.add(u);
+            for(Edge e : u.getEdges()){
+                if(graph.get(e.getEnd()).value > u.value + e.getCost()){
+                    graph.get(e.getEnd()).value = u.value + e.getCost();
+                    graph.get(e.getEnd()).prev = u;
+                }
+            }
+        }
+        return route;
     }
 
     public int findShortestRoute(String startVertex, String endVertex) {
-        ArrayList<Integer> distance = new ArrayList<>();
-        return 0;
+        int value = -1;
+        ArrayList<Vertex> route = distanceTrip(graph.get(startVertex));
+        Vertex v = new Vertex("v");
+        for(int i = 0; i < route.size(); i++){
+            if(value > -1){
+                v = route.get(i);
+                value += v.value;
+            }
+            if(route.get(i).getName().equals(startVertex)){
+                v = route.get(i);
+                value = v.value;
+            }
+            if(route.get(i).getName().equals(endVertex)){
+                break;
+            }
+
+        }
+        return value;
     }
 
     //NOTE: THE PARAMETER DATA TYPES MAY BE CHANGED TO VERTEX LATER ON
     public int findCheapestRoute(String startVertex, String endVertex) {
-        ArrayList<Integer> cost = new ArrayList<>();
-        return 0;
+        int value = -1;
+        ArrayList<Vertex> route = costTrip(graph.get(startVertex));
+        Vertex v = new Vertex("v");
+        for(int i = 0; i < route.size(); i++){
+            if(value > -1){
+                v = route.get(i);
+                value += v.value;
+            }
+            if(route.get(i).getName().equals(startVertex)){
+                v = route.get(i);
+                value = v.value;
+            }
+            if(route.get(i).getName().equals(endVertex)){
+                break;
+            }
+
+        }
+        return value;
     }
 
     //NOTE: THE PARAMETER DATA TYPES MAY BE CHANGED TO VERTEX LATER ON
     public int findFastestRoute(String startVertex, String endVertex) {
-        ArrayList<Integer> time = new ArrayList<>();
-        return 0;
+        int value = -1;
+        ArrayList<Vertex> route = timeTrip(graph.get(startVertex));
+        Vertex v = new Vertex("v");
+        for(int i = 0; i < route.size(); i++){
+            if(value > -1){
+                v = route.get(i);
+                value += v.value;
+            }
+            if(route.get(i).getName().equals(startVertex)){
+                v = route.get(i);
+                value = v.value;
+            }
+            if(route.get(i).getName().equals(endVertex)){
+                break;
+            }
+
+        }
+        return value;
     }
 
 }
