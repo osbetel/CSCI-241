@@ -27,7 +27,7 @@ public class MyGraph {
             loadVertices(vertexFileName);
             loadEdges(edgeFileName);
         } catch (FileNotFoundException err) {
-            System.out.println(err + "\n^^Call to MyGraph constructor.");
+            System.out.print(err + "\n^^Call to MyGraph constructor.");
         }
     }
 
@@ -100,13 +100,13 @@ public class MyGraph {
         ArrayList<Vertex> route = new ArrayList<>();
         ArrayList<Vertex> vertexList = new ArrayList<>();
         Set<String> keys = graph.keySet();
+        for (String str : keys) {
+            vertexList.add(graph.get(str));
+        }
         for(Vertex v : vertexList){
             v.value = Integer.MAX_VALUE;
         }
         start.value = 0;
-        for (String str : keys) {
-            vertexList.add(graph.get(str));
-        }
         while(!vertexList.isEmpty()){
             Vertex u = extractMin(vertexList);
             vertexList.remove(u);
@@ -126,13 +126,13 @@ public class MyGraph {
         ArrayList<Vertex> route = new ArrayList<>();
         ArrayList<Vertex> vertexList = new ArrayList<>();
         Set<String> keys = graph.keySet();
+        for (String str : keys) {
+            vertexList.add(graph.get(str));
+        }
         for(Vertex v : vertexList){
             v.value = Integer.MAX_VALUE;
         }
         start.value = 0;
-        for (String str : keys) {
-            vertexList.add(graph.get(str));
-        }
         while(!vertexList.isEmpty()){
             Vertex u = extractMin(vertexList);
             vertexList.remove(u);
@@ -152,13 +152,13 @@ public class MyGraph {
         ArrayList<Vertex> route = new ArrayList<>();
         ArrayList<Vertex> vertexList = new ArrayList<>();
         Set<String> keys = graph.keySet();
+        for (String str : keys) {
+            vertexList.add(graph.get(str));
+        }
         for(Vertex v : vertexList){
             v.value = Integer.MAX_VALUE;
         }
         start.value = 0;
-        for (String str : keys) {
-            vertexList.add(graph.get(str));
-        }
         while(!vertexList.isEmpty()){
             Vertex u = extractMin(vertexList);
             vertexList.remove(u);
@@ -174,18 +174,12 @@ public class MyGraph {
     }
 
     public int findShortestRoute(String startVertex, String endVertex) {
-        int value = -1;
+        int value = 0;
         ArrayList<Vertex> route = distanceTrip(graph.get(startVertex));
         Vertex v = new Vertex("v");
         for(int i = 0; i < route.size(); i++){
-            if(value > -1){
-                v = route.get(i);
-                value += v.value;
-            }
-            if(route.get(i).getName().equals(startVertex)){
-                v = route.get(i);
-                value = v.value;
-            }
+            v = route.get(i);
+            value += v.value;
             if(route.get(i).getName().equals(endVertex)){
                 break;
             }
@@ -196,18 +190,12 @@ public class MyGraph {
 
     //NOTE: THE PARAMETER DATA TYPES MAY BE CHANGED TO VERTEX LATER ON
     public int findCheapestRoute(String startVertex, String endVertex) {
-        int value = -1;
+        int value = 0;
         ArrayList<Vertex> route = costTrip(graph.get(startVertex));
         Vertex v = new Vertex("v");
         for(int i = 0; i < route.size(); i++){
-            if(value > -1){
-                v = route.get(i);
-                value += v.value;
-            }
-            if(route.get(i).getName().equals(startVertex)){
-                v = route.get(i);
-                value = v.value;
-            }
+            v = route.get(i);
+            value += v.value;
             if(route.get(i).getName().equals(endVertex)){
                 break;
             }
@@ -218,18 +206,12 @@ public class MyGraph {
 
     //NOTE: THE PARAMETER DATA TYPES MAY BE CHANGED TO VERTEX LATER ON
     public int findFastestRoute(String startVertex, String endVertex) {
-        int value = -1;
+        int value = 0;
         ArrayList<Vertex> route = timeTrip(graph.get(startVertex));
         Vertex v = new Vertex("v");
         for(int i = 0; i < route.size(); i++){
-            if(value > -1){
-                v = route.get(i);
-                value += v.value;
-            }
-            if(route.get(i).getName().equals(startVertex)){
-                v = route.get(i);
-                value = v.value;
-            }
+            v = route.get(i);
+            value += v.value;
             if(route.get(i).getName().equals(endVertex)){
                 break;
             }
