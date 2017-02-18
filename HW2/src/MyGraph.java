@@ -176,14 +176,11 @@ public class MyGraph {
     public int findShortestRoute(String startVertex, String endVertex) {
         int value = 0;
         ArrayList<Vertex> route = distanceTrip(graph.get(startVertex));
-        Vertex v = new Vertex("v");
-        for(int i = 0; i < route.size(); i++){
-            v = route.get(i);
-            value += v.value;
-            if(route.get(i).getName().equals(endVertex)){
-                break;
+        for(Vertex v : route){
+            if(v == graph.get(endVertex)){
+                value = v.value;
+                return value;
             }
-
         }
         return value;
     }
@@ -192,14 +189,11 @@ public class MyGraph {
     public int findCheapestRoute(String startVertex, String endVertex) {
         int value = 0;
         ArrayList<Vertex> route = costTrip(graph.get(startVertex));
-        Vertex v = new Vertex("v");
-        for(int i = 0; i < route.size(); i++){
-            v = route.get(i);
-            value += v.value;
-            if(route.get(i).getName().equals(endVertex)){
-                break;
+        for(Vertex v : route){
+            if(v == graph.get(endVertex)){
+                value = v.value;
+                return value;
             }
-
         }
         return value;
     }
@@ -208,16 +202,13 @@ public class MyGraph {
     public int findFastestRoute(String startVertex, String endVertex) {
         int value = 0;
         ArrayList<Vertex> route = timeTrip(graph.get(startVertex));
-        Vertex v = new Vertex("v");
-        for(int i = 0; i < route.size(); i++){
-            v = route.get(i);
-            value += v.value;
-            if(route.get(i).getName().equals(endVertex)){
-                break;
+        for(Vertex v : route){
+            if(v == graph.get(endVertex)){
+                value = v.value;
+                return value;
             }
-
         }
         return value;
     }
-
 }
+
