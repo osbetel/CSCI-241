@@ -83,6 +83,8 @@ public class MyGraph {
     }
 
     private Vertex extractMin(ArrayList<Vertex> vList){
+        //grabs the Vertex with the minimum value in an ArrayList and returns it
+        
         Vertex min = new Vertex("min");
         min.value = Integer.MAX_VALUE;
         for(Vertex v : vList){
@@ -95,7 +97,10 @@ public class MyGraph {
         return min;
     }
 
-    //Recursive
+    /*Uses start as the starting vertex to explore using djikstra's alg and
+    respective value. Returns an ArrayList containing each vertex in the graph in order 
+    of when it was explored and its value as their value for the shortest path.*/
+    
     public ArrayList<Vertex> distanceTrip(Vertex start) {
         ArrayList<Vertex> route = new ArrayList<>();
         ArrayList<Vertex> vertexList = new ArrayList<>();
@@ -120,8 +125,7 @@ public class MyGraph {
         }
         return route;
     }
-
-    //Recursive
+    
     public ArrayList<Vertex> timeTrip(Vertex start) {
         ArrayList<Vertex> route = new ArrayList<>();
         ArrayList<Vertex> vertexList = new ArrayList<>();
@@ -147,7 +151,7 @@ public class MyGraph {
         return route;
     }
 
-    //Recursive
+    
     public ArrayList<Vertex> costTrip(Vertex start) {
         ArrayList<Vertex> route = new ArrayList<>();
         ArrayList<Vertex> vertexList = new ArrayList<>();
@@ -173,6 +177,10 @@ public class MyGraph {
         return route;
     }
 
+    /*Uses their respective djikstra function using startVertex as the 
+    start of the function and using the value of endVertex to return the 
+    answer.*/
+    
     public int findShortestRoute(String startVertex, String endVertex) {
         int value = 0;
         ArrayList<Vertex> route = distanceTrip(graph.get(startVertex));
@@ -184,8 +192,7 @@ public class MyGraph {
         }
         return value;
     }
-
-    //NOTE: THE PARAMETER DATA TYPES MAY BE CHANGED TO VERTEX LATER ON
+    
     public int findCheapestRoute(String startVertex, String endVertex) {
         int value = 0;
         ArrayList<Vertex> route = costTrip(graph.get(startVertex));
@@ -197,8 +204,7 @@ public class MyGraph {
         }
         return value;
     }
-
-    //NOTE: THE PARAMETER DATA TYPES MAY BE CHANGED TO VERTEX LATER ON
+    
     public int findFastestRoute(String startVertex, String endVertex) {
         int value = 0;
         ArrayList<Vertex> route = timeTrip(graph.get(startVertex));
