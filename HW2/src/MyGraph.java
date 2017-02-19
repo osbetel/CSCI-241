@@ -31,6 +31,11 @@ public class MyGraph {
         }
     }
 
+    /**
+     * Loads the vertices from vertex.txts
+     * @param vertexFileName
+     * @throws FileNotFoundException
+     */
     private void loadVertices(String vertexFileName) throws FileNotFoundException {
         //Each node also contains a method, getData() that returns a String
         //Of their start, end, distance, cost, time. Via graph.get(key).getData()
@@ -44,6 +49,11 @@ public class MyGraph {
         }
     }
 
+    /**
+     * Loads the edges from edges.txt
+     * @param edgeFileName
+     * @throws FileNotFoundException
+     */
     private void loadEdges(String edgeFileName) throws FileNotFoundException {
         //Read in the edges file. Edges are added to nodes/
         Scanner sc = new Scanner(new File(edgeFileName));
@@ -82,6 +92,11 @@ public class MyGraph {
         return graph;
     }
 
+    /**
+     * Extracts a vertex with a minimum determined value from an ArrayList
+     * @param vList An input ArrayList of Vertices
+     * @return Returns the extracted vertex
+     */
     private Vertex extractMin(ArrayList<Vertex> vList){
         //grabs the Vertex with the minimum value in an ArrayList and returns it
         
@@ -100,121 +115,82 @@ public class MyGraph {
     /*Uses start as the starting vertex to explore using djikstra's alg and
     respective value. Returns an ArrayList containing each vertex in the graph in order 
     of when it was explored and its value as their value for the shortest path.*/
-    
-    public ArrayList<Vertex> distanceTrip(Vertex start) {
-        ArrayList<Vertex> route = new ArrayList<>();
+    /**
+     * Usage of Djikstra's Algorithm to determine the shortest route from a starting vertex to all other vertices
+     * @param start Starting vertex as a String
+     * @param routeParam 1, 2, 3, or 4 to determine distance, time, cost, or all
+     * @return Returns an ArrayList of the value costs from the starting vertex to every other vertex
+     */
+    public ArrayList<Vertex> djikstra(Vertex start, int routeParam) {
+        ArrayList<Vertex> jumps = new ArrayList<>();
         ArrayList<Vertex> vertexList = new ArrayList<>();
+        ArrayList<Vertex> route = new ArrayList<>();
+
         Set<String> keys = graph.keySet();
+
         for (String str : keys) {
             vertexList.add(graph.get(str));
         }
+
         for(Vertex v : vertexList){
             v.value = Integer.MAX_VALUE;
         }
+
         start.value = 0;
         while(!vertexList.isEmpty()){
             Vertex u = extractMin(vertexList);
             vertexList.remove(u);
             route.add(u);
-            for(Edge e : u.getEdges()){
-                if(graph.get(e.getEnd()).value > u.value + e.getDistance()){
-                    graph.get(e.getEnd()).value = u.value + e.getDistance();
-                    graph.get(e.getEnd()).prev = u;
-                }
-            }
-        }
-        return route;
-    }
-    
-    public ArrayList<Vertex> timeTrip(Vertex start) {
-        ArrayList<Vertex> route = new ArrayList<>();
-        ArrayList<Vertex> vertexList = new ArrayList<>();
-        Set<String> keys = graph.keySet();
-        for (String str : keys) {
-            vertexList.add(graph.get(str));
-        }
-        for(Vertex v : vertexList){
-            v.value = Integer.MAX_VALUE;
-        }
-        start.value = 0;
-        while(!vertexList.isEmpty()){
-            Vertex u = extractMin(vertexList);
-            vertexList.remove(u);
-            route.add(u);
-            for(Edge e : u.getEdges()){
-                if(graph.get(e.getEnd()).value > u.value + e.getTime()){
-                    graph.get(e.getEnd()).value = u.value + e.getTime();
-                    graph.get(e.getEnd()).prev = u;
-                }
+//            System.out.println(vertexList);
+//            System.out.println(route);
+//            System.out.println(jumps);
+
+            switch (routeParam) {
+                case 1:
+                    for(Edge e : u.getEdges()){
+                        if(graph.get(e.getEnd()).value > u.value + e.getDistance()) {
+                            graph.get(e.getEnd()).value = u.value + e.getDistance();
+                            graph.get(e.getEnd()).prev = u;
+                        }
+                    }
+                    break;
+                case 2:
+                    for(Edge e : u.getEdges()) {
+                        if(graph.get(e.getEnd()).value > u.value + e.getTime()){
+                            graph.get(e.getEnd()).value = u.value + e.getTime();
+                            graph.get(e.getEnd()).prev = u;
+                        }
+                    }
+                    break;
+                case 3:
+                    for(Edge e : u.getEdges()) {
+                        if(graph.get(e.getEnd()).value > u.value + e.getCost()){
+                            graph.get(e.getEnd()).value = u.value + e.getCost();
+                            graph.get(e.getEnd()).prev = u;
+                        }
+                    }
+                    break;
             }
         }
         return route;
     }
 
-    
-    public ArrayList<Vertex> costTrip(Vertex start) {
-        ArrayList<Vertex> route = new ArrayList<>();
-        ArrayList<Vertex> vertexList = new ArrayList<>();
-        Set<String> keys = graph.keySet();
-        for (String str : keys) {
-            vertexList.add(graph.get(str));
-        }
-        for(Vertex v : vertexList){
-            v.value = Integer.MAX_VALUE;
-        }
-        start.value = 0;
-        while(!vertexList.isEmpty()){
-            Vertex u = extractMin(vertexList);
-            vertexList.remove(u);
-            route.add(u);
-            for(Edge e : u.getEdges()){
-                if(graph.get(e.getEnd()).value > u.value + e.getCost()){
-                    graph.get(e.getEnd()).value = u.value + e.getCost();
-                    graph.get(e.getEnd()).prev = u;
-                }
-            }
-        }
-        return route;
-    }
-
-    /*Uses their respective djikstra function using startVertex as the 
-    start of the function and using the value of endVertex to return the 
-    answer.*/
-    
-    public int findShortestRoute(String startVertex, String endVertex) {
-        int value = 0;
-        ArrayList<Vertex> route = distanceTrip(graph.get(startVertex));
+    /**
+     * Functions as a singular route-finding function. Depending on the integer parameter the user inputs,
+     * it can find the shortest route, the fastest route, or the cheapest route.
+     * @param startVertex Starting vertex as a String
+     * @param endVertex Edning vertex as a String
+     * @param routeParam 1, 2, 3, or 4 to determine distance, time, cost, or all
+     * @return Returns an integer of the value of the route
+     */
+    public int findRoute(String startVertex, String endVertex, int routeParam) {
+        ArrayList<Vertex> route = djikstra(graph.get(startVertex), routeParam);
         for(Vertex v : route){
-            if(v == graph.get(endVertex)){
-                value = v.value;
-                return value;
+            if(v.getName().equals(endVertex)){
+                return v.value;
             }
         }
-        return value;
-    }
-    
-    public int findCheapestRoute(String startVertex, String endVertex) {
-        int value = 0;
-        ArrayList<Vertex> route = costTrip(graph.get(startVertex));
-        for(Vertex v : route){
-            if(v == graph.get(endVertex)){
-                value = v.value;
-                return value;
-            }
-        }
-        return value;
-    }
-    
-    public int findFastestRoute(String startVertex, String endVertex) {
-        int value = 0;
-        ArrayList<Vertex> route = timeTrip(graph.get(startVertex));
-        for(Vertex v : route){
-            if(v == graph.get(endVertex)){
-                value = v.value;
-                return value;
-            }
-        }
-        return value;
+        return -1;
     }
 }
 
