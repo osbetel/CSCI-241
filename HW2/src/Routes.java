@@ -29,7 +29,7 @@ public class Routes {
             doQuitProg(line);   //Checks if the user typed "quit"
             String[] input = line.split(" ");
             if (!checkInput(input)) {  //Checks if the input array is of legitimate length and parameters
-                break;
+                continue;
             }
 
             startVertex = input[0]; endVertex = input[1];

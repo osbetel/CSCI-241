@@ -173,6 +173,7 @@ public class MyGraph {
             }
         }
         return route;
+
     }
 
     /**
@@ -190,7 +191,7 @@ public class MyGraph {
                 return v.value;
             }
         }
-        return -1;
+        return Integer.MAX_VALUE;
     }
 }
 

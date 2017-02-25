@@ -13,8 +13,11 @@ public class Vertex {
     public int value;
     public Vertex prev;
 
-
-
+    /**
+     * Constructor for Vertex object
+     * @param name Name of the Vertex
+     * @param edges ArrayList of the Vertex's edges
+     */
     public Vertex(String name, ArrayList<Edge> edges) {
         this.name = name;
         this.edges = edges;
@@ -22,6 +25,10 @@ public class Vertex {
         prev = null;
     }
 
+    /**
+     * Secondary constructor for Vertex, only one in use. ArrayList of Edges is added later when reading the edge file
+     * @param name Name of the Vertex
+     */
     public Vertex(String name) {
         this.name = name;
         edges = new ArrayList<>();
@@ -29,6 +36,14 @@ public class Vertex {
         prev = null;
     }
 
+    /**
+     * Add an edge to the Vertex
+     * @param start Starting vertex
+     * @param end Edngin vertex
+     * @param distance
+     * @param time
+     * @param cost
+     */
     public void addEdge(Vertex start, Vertex end, int distance, int time, int cost) {
         edges.add(new Edge(start, end, distance, time, cost));
     }
