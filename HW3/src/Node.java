@@ -7,6 +7,9 @@ import java.util.Arrays;
 public class Node {
     private Node leftChild;
     private Node rightChild;
+    private String name;
+    private char gender;
+    private int occurrences;
     private String[] values;
 
         /*
@@ -16,13 +19,14 @@ public class Node {
         numeric value. We can use this value (which is the ASCII value by the way) to sort the tree.
          */
 
-    public Node(String readLine, Node left, Node right) {
+    public Node(String[] readLine, Node left, Node right) {
         leftChild = left;
         rightChild = right;
-        values = readLine.split(",");
-        //values[0] = name
-        //values[1] = gender
-        //values[2] = occurences
+        name = readLine[0];
+        gender = readLine[1].charAt(0);
+        occurrences = Integer.parseInt(readLine[2]);
+
+        values = readLine;
     }
 
     public String toString() {
@@ -38,23 +42,23 @@ public class Node {
     }
 
     public String getName() {
-        return values[0];
+        return name;
     }
 
-    public int getAlphabeticalValue() {
-        return Character.getNumericValue(values[0].charAt(0));
+    public int getAlphabeticalValue(int index) {
+        return Character.getNumericValue(name.charAt(index));
     }
 
     public String[] getValues() {
         return values;
     }
 
-    public String getGender() {
-        return values[1];
+    public char getGender() {
+        return gender;
     }
 
     public int getOccurences() {
-        return Integer.parseInt(values[2]);
+        return occurrences;
     }
 
     public void setLeftChild(Node leftChild) {
@@ -67,14 +71,17 @@ public class Node {
 
     public void setName(String name) {
         values[0] = name;
+        this.name = name;
     }
 
     public void setGender(char c) {
         //must be M or F!!!
         values[1] = String.valueOf(c);
+        gender = c;
     }
 
     public void setOccurrences(int num) {
         values[2] = String.valueOf(num);
+        occurrences = num;
     }
 }

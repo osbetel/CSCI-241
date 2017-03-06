@@ -42,42 +42,59 @@ public class BSTree {
         //input file converted into an array
 
         for (String v : lines) {
-            addNode(v);
+            addNode(v.split(","));
         }
+        System.out.println(root.getRightChild().getLeftChild().toString());
+        System.out.println(root.toString());
+        System.out.println(root.getRightChild().toString());
 
-        print(root);
+//        print(root);
 
 
 
     }
 
-    private void addNode(String values) {
+    private void addNode(String[] values) {
         if (root == null) {
             root = new Node(values, null, null);
         } else {
-            addNode(root, values);
+            addNode(root, values, 0);
         }
     }
 
-    private void addNode(Node parent, String values) {
-        int childValue = Integer.parseInt(values.split(",")[2]);
+    private void addNode(Node parent, String[] values, int charIndex) {
+        String childName = values[0];
+        String parentName = parent.getName();
 
-        if (childValue < parent.getOccurences()) {
+        int childLength = childName.length();
+        int parentLength = parentName.length();
+
+        int childValue = Character.getNumericValue(values[0].charAt(charIndex));
+        int parentValue = parent.getAlphabeticalValue(charIndex);
+
+        if (childValue < parentValue) {
 
             if (parent.getLeftChild() == null) {
                 parent.setLeftChild(new Node(values, null, null));
             } else {
-                addNode(parent.getLeftChild(), values);
+                addNode(parent.getLeftChild(), values, charIndex);
             }
 
-        } else if (childValue > parent.getOccurences()) {
+        } else if (childValue > parentValue) {
 
             if (parent.getRightChild() == null) {
                 parent.setRightChild(new Node(values, null, null));
-            } else {
-                addNode(parent.getRightChild(), values);
+            }
+            else {
+                addNode(parent.getRightChild(), values, charIndex);
             }
 
+        } else if (childValue == parentValue) {
+            //If values are the same, and we've hit the end of a name, ie: John and Johnathan, we put
+            //the shorter name first and the longer name last.
+            if (charIndex < childLength && charIndex < parentLength) {
+                addNode(parent, values, charIndex + 1);
+            }
         }
     }
 
@@ -93,11 +110,15 @@ public class BSTree {
         return;
     }
 
-    public void print(Node root) {
+    public void print() {
+        print(root);
+    }
+
+    private void print(Node root) {
         if (root != null) {
-            print(root.getLeftChild());
-            System.out.println(root.toString());
             print(root.getRightChild());
+            System.out.println(root.toString());
+            print(root.getLeftChild());
 
         }
     }

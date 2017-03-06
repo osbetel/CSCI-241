@@ -1,5 +1,6 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Arrays;
 import java.util.Scanner;
 
 /**
@@ -31,6 +32,9 @@ public class NameData {
             str += sc.nextLine() + "\n";
         }
         String[] arr = str.split("\n");
+        Arrays.sort(arr);
+
+//        System.out.println(arr[0]);
 
         tree = new BSTree(arr);
     }
