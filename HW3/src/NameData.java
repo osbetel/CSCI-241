@@ -20,10 +20,7 @@ public class NameData {
 
     public static void createTree(String inputFile) throws FileNotFoundException {
 
-        //read input
-        //user input from terminal
-        //parse.... list.mostPopular()
-        //parse... tree.searchName()
+//        tree = new BSTree();
 
         Scanner sc = new Scanner(new File(inputFile));
         String str = "";
@@ -33,9 +30,10 @@ public class NameData {
         }
         String[] arr = str.split("\n");
         Arrays.sort(arr);
-
-//        System.out.println(arr[0]);
-
+//        System.out.println(Arrays.binarySearch(arr, "Rayan,F,53"));
+//        System.out.println(arr[25979]);
+//        System.out.println(arr[25978]);
+//        System.out.println(Arrays.toString(arr));
         tree = new BSTree(arr);
     }
 
