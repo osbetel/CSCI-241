@@ -62,6 +62,20 @@ public class Hash {
         }
     }
 
+    private ArrayList<Node> sort(ArrayList<Node> aList){
+        Node temp;
+        for(int i = 1; i < aList.size(); i++){
+            for(int j = i; j > 0; j--){
+                if(aList.get(j).getRank() < aList.get(j - 1).getRank()){
+                    temp = aList.get(j);
+                    aList.set(j, aList.get(j-1));
+                    aList.set(j-1, temp);
+                }
+            }
+        }
+        return aList;
+    }
+
 
     public ArrayList<Node> searchName(String aName){
         ArrayList people = new ArrayList<Node>();
@@ -92,9 +106,34 @@ public class Hash {
                 boy.add(maleHash.get(str));
             }
         }
-        
-
+        ArrayList<Node> sortedGirls = sort(girl);
+        ArrayList<Node> sortedBoys = sort(boy);
+        for(Node node : sortedGirls){
+            people.add(node);
+        }
+        for(Node node : sortedBoys){
+            people.add(node);
+        }
         return people;
+    }
+
+    public void showNameAlphabetically(){
+        HashMap<String, Node> allNames = new HashMap<>();
+        Set<String> girlKeys = femaleHash.keySet();
+        Set<String> boyKeys = maleHash.keySet();
+        for(String key : girlKeys){
+            allNames.put(key, femaleHash.get(key));
+        }
+        for(String key : boyKeys){
+            allNames.put(key, maleHash.get(key));
+        }
+        Set<String> allKeys = allNames.keySet();
+        String[] sortingArray = allKeys.toArray(new String[allKeys.size()]);
+        Arrays.sort(sortingArray);
+        for(String key : sortingArray){
+            System.out.println(allNames.get(key).getName() + ", " + allNames.get(key).getGender() + ", " +
+                    allNames.get(key).getOccurences() + ", " + (allNames.get(key).getOccurences() / totalOccurrences)*100);
+        }
     }
 
 }
