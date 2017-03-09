@@ -10,8 +10,6 @@ public class NameList {
     private int totalOccurrences = 0;
     ArrayList<Node> peopleList;
 
-    //Change error message as desired
-    
     public NameList(String filename){
         peopleList = new ArrayList<>();
         try{
@@ -22,8 +20,8 @@ public class NameList {
         }
     }
 
-    //kept the ranking for each gender as seperate, however does not affect totalOccurrence count    
-    
+    //Prints out the entire list of names in alphabetical order, change the print statement to correct data as needed
+
     private void loadArrayList(String fileName)throws FileNotFoundException{
         int count = 0;
         Scanner scan = new Scanner(new File(fileName));
@@ -48,7 +46,7 @@ public class NameList {
     }
 
     //Used to sort for ranking in mostPopularName
-    
+
     private ArrayList<Node> sortRank(ArrayList<Node> aList){
         Node temp;
         for(int i = 1; i < aList.size(); i++){
@@ -62,9 +60,9 @@ public class NameList {
         }
         return aList;
     }
-    
+
     //Sorts the entire ArrayList alphabetically
-    
+
     private ArrayList<Node> sortAlphabetically(ArrayList<Node> aList){
         Node temp;
         for(int i = 1; i < aList.size(); i++){
@@ -80,11 +78,11 @@ public class NameList {
     }
 
     /*Returns an ArrayList of nodes containing the female and male versions of each name, will need to read
-    the ArrayList in kickstarter and print out data such as gender and occurances for each name.
+    the ArrayList in kickstarter and print out data such as gender and occurrences for each name.
     */
-    
+
     public ArrayList<Node> searchName(String aName){
-        ArrayList people = new ArrayList<Node>();
+        ArrayList<Node> people = new ArrayList<>();
         for(Node node : peopleList){
             if(aName.equals(node.getName())){
                 people.add(node);
@@ -92,7 +90,7 @@ public class NameList {
         }
         return people;
     }
-    
+
     /*Returns an ArrayList containing first the top 10 girl names, and then the top 10 boy names in the correct order
     will need to read into the ArrayList in Kickstarter to display needed information
     */
@@ -127,7 +125,7 @@ public class NameList {
     }
 
     //Prints out the entire list of names in alphabetical order, change the print statement to correct data as needed
-    
+
     public void showNameAlphabetically(){
         ArrayList<Node> sortedList = sortAlphabetically(peopleList);
         for(Node node : sortedList){
