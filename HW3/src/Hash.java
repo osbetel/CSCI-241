@@ -131,8 +131,9 @@ public class Hash {
         String[] sortingArray = allKeys.toArray(new String[allKeys.size()]);
         Arrays.sort(sortingArray);
         for(String key : sortingArray){
+            double occurrencePercent = ((double)allNames.get(key).getOccurences() / (double)totalOccurrences) *100;
             System.out.println(allNames.get(key).getName() + ", " + allNames.get(key).getGender() + ", " +
-                    allNames.get(key).getOccurences() + ", " + (allNames.get(key).getOccurences() / totalOccurrences)*100);
+                    allNames.get(key).getOccurences() + ", " + occurrencePercent + "%");
         }
     }
 
