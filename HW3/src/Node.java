@@ -1,3 +1,4 @@
+
 import java.util.Arrays;
 
 /**
@@ -11,6 +12,7 @@ public class Node {
     private char gender;
     private int occurrences;
     private String[] values;
+    private int rank;
 
         /*
         In order to sort alphabetically, we will consider the numbers 10 - 35.
@@ -27,6 +29,13 @@ public class Node {
         occurrences = Integer.parseInt(readLine[2]);
 
         values = readLine;
+    }
+
+    public Node(String name, char gender, int occurrences, int rank){
+        this.name = name;
+        this.gender = gender;
+        this.occurrences = occurrences;
+        this.rank = rank;
     }
 
     public String toString() {
@@ -59,6 +68,10 @@ public class Node {
 
     public int getOccurences() {
         return occurrences;
+    }
+
+    public int getRank(){
+        return rank;
     }
 
     public void setLeftChild(Node leftChild) {
