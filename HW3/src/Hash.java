@@ -11,8 +11,6 @@ public class Hash {
     private HashMap<String, Node> maleHash;
     private HashMap<String, Node> femaleHash;
 
-    //Change the printed error message as desired
-    
     public Hash(String fileName){
         maleHash = new HashMap<>();
         femaleHash = new HashMap<>();
@@ -25,10 +23,9 @@ public class Hash {
             System.out.println(err);
         }
     }
-    
-    //Decided to split the assignment up into 2 hashmaps, 1 for boys and 1 for girls as it seemed it would be easiest
-    
-    
+
+    //Decided to split the assignment up into 2 hashmaps, 1 for boys and 1 for girls as it seemed it would
+
     private void loadMaleHashMap(String fileName)throws FileNotFoundException{
         int count = 0;
         Scanner scan = new Scanner(new File(fileName));
@@ -66,7 +63,7 @@ public class Hash {
             }
         }
     }
-    
+
     //Insertion sorting algorithm to sort names by highest to lowest ranking in order for mostPopularName to be in order
 
     private ArrayList<Node> sort(ArrayList<Node> aList){
@@ -82,13 +79,13 @@ public class Hash {
         }
         return aList;
     }
-    
+
     /*Returns an ArrayList of nodes containing the female and male versions of each name, will need to read
-    the ArrayList in kickstarter and print out data such as gender and occurances for each name.
+    the ArrayList in kickstarter and print out data such as gender and occurrences for each name.
     */
-    
+
     public ArrayList<Node> searchName(String aName){
-        ArrayList people = new ArrayList<Node>();
+        ArrayList<Node> people = new ArrayList<>();
         if(femaleHash.containsKey(aName)){
             people.add(femaleHash.get(aName));
         }
@@ -97,15 +94,15 @@ public class Hash {
         }
         return people;
     }
-    
+
     /*Returns an ArrayList containing first the top 10 girl names, and then the top 10 boy names in the correct order
     will need to read into the ArrayList in Kickstarter to display needed information
     */
 
     public ArrayList<Node> mostPopularName() {
-        ArrayList people = new ArrayList<Node>();
-        ArrayList boy = new ArrayList<Node>();
-        ArrayList girl = new ArrayList<Node>();
+        ArrayList<Node> people = new ArrayList<>();
+        ArrayList<Node> boy = new ArrayList<>();
+        ArrayList<Node> girl = new ArrayList<>();
         Set<String> femaleSet = femaleHash.keySet();
         Set<String> maleSet = maleHash.keySet();
         for(String str : femaleSet){
@@ -132,7 +129,7 @@ public class Hash {
     }
 
     //Prints out the entire list of names in alphabetical order, change the print statement to correct data as needed
-    
+
     public void showNameAlphabetically(){
         HashMap<String, Node> allNames = new HashMap<>();
         Set<String> girlKeys = femaleHash.keySet();
