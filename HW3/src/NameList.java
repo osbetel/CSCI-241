@@ -8,25 +8,42 @@ public class NameList {
     private char gender;
     private int occurrences;
     private int totalOccurrences = 0;
-    ArrayList<Node> peopleList = new ArrayList<>();
+    ArrayList<Node> peopleList;
+
+    public NameList(String filename){
+        peopleList = new ArrayList<>();
+        try{
+            loadArrayList(filename);
+        }
+        catch(FileNotFoundException err){
+            System.out.println(err);
+        }
+    }
 
     private void loadArrayList(String fileName)throws FileNotFoundException{
         int count = 0;
         Scanner scan = new Scanner(new File(fileName));
         while(scan.hasNext()){
-            count++;
+            totalOccurrences++;
             String line = scan.nextLine();
             Scanner lineScan = new Scanner(line);
             lineScan.useDelimiter(",");
             name = lineScan.next();
             gender = lineScan.next().charAt(0);
             occurrences = lineScan.nextInt();
-            Node person = new Node(name, gender, occurrences, count);
-            peopleList.add(person);
+            if(gender == 'F') {
+                Node person = new Node(name, gender, occurrences, totalOccurrences);
+                peopleList.add(person);
+            }
+            else {
+                count++;
+                Node person = new Node(name, gender, occurrences, count);
+                peopleList.add(person);
+            }
         }
     }
 
-    private ArrayList<Node> sort(ArrayList<Node> aList){
+    private ArrayList<Node> sortRank(ArrayList<Node> aList){
         Node temp;
         for(int i = 1; i < aList.size(); i++){
             for(int j = i; j > 0; j--){
@@ -34,6 +51,20 @@ public class NameList {
                     temp = aList.get(j);
                     aList.set(j, aList.get(j-1));
                     aList.set(j-1, temp);
+                }
+            }
+        }
+        return aList;
+    }
+
+    private ArrayList<Node> sortAlphabetically(ArrayList<Node> aList){
+        Node temp;
+        for(int i = 1; i < aList.size(); i++){
+            for(int j = i; j > 0; j--){
+                if(aList.get(j - 1).getName().compareTo(aList.get(j).getName()) > 0){
+                    temp = aList.get(j);
+                    aList.set(j, aList.get(j - 1));
+                    aList.set(j - 1, temp);
                 }
             }
         }
@@ -68,8 +99,8 @@ public class NameList {
                 }
             }
         }
-        ArrayList<Node> sortedGirls = sort(girls);
-        ArrayList<Node> sortedBoys = sort(boys);
+        ArrayList<Node> sortedGirls = sortRank(girls);
+        ArrayList<Node> sortedBoys = sortRank(boys);
         for(Node node : sortedGirls){
             people.add(node);
         }
@@ -78,7 +109,13 @@ public class NameList {
         }
         return people;
     }
-    
+
     public void showNameAlphabetically(){
+        ArrayList<Node> sortedList = sortAlphabetically(peopleList);
+        for(Node node : sortedList){
+            double occurrencePercent = ((double)node.getOccurences() / (double)totalOccurrences) * 100;
+            System.out.println(node.getName() + ", " + node.getGender() + ", " + node.getOccurences() + ", " +
+                    occurrencePercent + "%");
+        }
     }
 }
