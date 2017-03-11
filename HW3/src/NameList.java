@@ -2,6 +2,7 @@ import java.io.*;
 import java.util.*;
 /**
  * Created by SammyTang on 3/8/17.
+ * Modified by Andrew Nguyen 3/9/17
  */
 public class NameList {
     private String name;
@@ -18,6 +19,7 @@ public class NameList {
         catch(FileNotFoundException err){
             System.out.println(err);
         }
+//        System.out.println(peopleList);
     }
 
     //Prints out the entire list of names in alphabetical order, change the print statement to correct data as needed
@@ -28,25 +30,29 @@ public class NameList {
         while(scan.hasNext()){
             totalOccurrences++;
             String line = scan.nextLine();
+
+            /*
             Scanner lineScan = new Scanner(line);
             lineScan.useDelimiter(",");
             name = lineScan.next();
             gender = lineScan.next().charAt(0);
             occurrences = lineScan.nextInt();
-            if(gender == 'F') {
-                Node person = new Node(name, gender, occurrences, totalOccurrences);
+            */
+
+            String[] data = line.split(",");
+            if(data[1].charAt(0) == 'F') {
+                Node person = new Node(data, totalOccurrences);
                 peopleList.add(person);
             }
             else {
                 count++;
-                Node person = new Node(name, gender, occurrences, count);
+                Node person = new Node(data, count);
                 peopleList.add(person);
             }
         }
     }
 
     //Used to sort for ranking in mostPopularName
-
     private ArrayList<Node> sortRank(ArrayList<Node> aList){
         Node temp;
         for(int i = 1; i < aList.size(); i++){
@@ -84,9 +90,13 @@ public class NameList {
     public ArrayList<Node> searchName(String aName){
         ArrayList<Node> people = new ArrayList<>();
         for(Node node : peopleList){
-            if(aName.equals(node.getName())){
+            if(aName.equalsIgnoreCase(node.getName())){
                 people.add(node);
             }
+        }
+
+        for (Node n : people) {
+            printNodePlusPercent(n);
         }
         return people;
     }
@@ -99,6 +109,8 @@ public class NameList {
         ArrayList<Node> people = new ArrayList<>();
         ArrayList<Node> girls = new ArrayList<>();
         ArrayList<Node> boys = new ArrayList<>();
+
+
         for(Node node : peopleList){
             if(node.getGender() == 'F'){
                 if(node.getRank() <= 10){
@@ -106,6 +118,7 @@ public class NameList {
                 }
             }
         }
+
         for(Node node : peopleList){
             if(node.getGender() == 'M'){
                 if(node.getRank() <= 10){
@@ -115,23 +128,34 @@ public class NameList {
         }
         ArrayList<Node> sortedGirls = sortRank(girls);
         ArrayList<Node> sortedBoys = sortRank(boys);
-        for(Node node : sortedGirls){
-            people.add(node);
-        }
+
         for(Node node : sortedBoys){
+            printNodePlusPercent(node);
             people.add(node);
         }
+        System.out.println();
+        for(Node node : sortedGirls){
+            printNodePlusPercent(node);
+            people.add(node);
+        }
+
         return people;
     }
 
     //Prints out the entire list of names in alphabetical order, change the print statement to correct data as needed
-
-    public void showNameAlphabetically(){
+    //TODO: broken
+    public ArrayList<Node> showNameAlphabetically() {
         ArrayList<Node> sortedList = sortAlphabetically(peopleList);
-        for(Node node : sortedList){
-            double occurrencePercent = ((double)node.getOccurences() / (double)totalOccurrences) * 100;
-            System.out.println(node.getName() + ", " + node.getGender() + ", " + node.getOccurences() + ", " +
-                    occurrencePercent + "%");
+
+        for(Node node : sortedList) {
+            printNodePlusPercent(node);
         }
+
+        return sortedList;
+    }
+
+    private void printNodePlusPercent(Node n) {
+        System.out.println(String.format("%20s", n) + " " +
+                String.format("%.6f", (double)n.getOccurences() / totalOccurrences * 100) + "%");
     }
 }

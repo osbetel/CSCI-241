@@ -90,7 +90,7 @@ public class Routes {
      * @param s A String
      */
     public static void doQuitProg(String s) {
-        if (s.equals("quit")) {
+        if (s.equalsIgnoreCase("quit")) {
             System.out.println("Program exiting...");
             System.exit(0);
         }

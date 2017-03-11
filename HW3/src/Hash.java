@@ -2,11 +2,9 @@ import java.io.*;
 import java.util.*;
 /**
  * Created by SammyTang on 3/8/17.
+ * Modified by Andrew Nguyen3/9/17
  */
 public class Hash {
-    private String name;
-    private char gender;
-    private int occurrences;
     private int totalOccurrences = 0;
     private HashMap<String, Node> maleHash;
     private HashMap<String, Node> femaleHash;
@@ -16,8 +14,7 @@ public class Hash {
         femaleHash = new HashMap<>();
 
         try{
-            loadMaleHashMap(fileName);
-            loadfemaleHashMap(fileName);
+            loadHashMap(fileName);
         }
         catch(FileNotFoundException err){
             System.out.println(err);
@@ -26,40 +23,31 @@ public class Hash {
 
     //Decided to split the assignment up into 2 hashmaps, 1 for boys and 1 for girls as it seemed it would
 
-    private void loadMaleHashMap(String fileName)throws FileNotFoundException{
-        int count = 0;
+    private void loadHashMap(String fileName)throws FileNotFoundException{
+        int countMale = 0;
+        int countFemale = 0;
         Scanner scan = new Scanner(new File(fileName));
         while(scan.hasNext()){
+            /*
             String line = scan.nextLine();
             Scanner lineScan = new Scanner(line);
             lineScan.useDelimiter(",");
             name = lineScan.next();
             gender = lineScan.next().charAt(0);
             occurrences = lineScan.nextInt();
-            if(gender == 'M') {
-                count++;
-                Node person = new Node(name, gender, occurrences, count);
-                maleHash.put(name, person);
-                totalOccurrences = totalOccurrences + occurrences;
-            }
-        }
-    }
-
-    private void loadfemaleHashMap(String fileName)throws FileNotFoundException{
-        int count = 0;
-        Scanner scan = new Scanner(new File(fileName));
-        while(scan.hasNext()){
-            String line = scan.nextLine();
-            Scanner lineScan = new Scanner(line);
-            lineScan.useDelimiter(",");
-            name = lineScan.next();
-            gender = lineScan.next().charAt(0);
-            occurrences = lineScan.nextInt();
-            if(gender =='F') {
-                count++;
-                Node person = new Node(name, gender, occurrences, count);
-                femaleHash.put(name, person);
-                totalOccurrences = totalOccurrences + occurrences;
+            */
+            String[] data = scan.nextLine().split(",");
+            totalOccurrences += Integer.parseInt(data[2]);
+            if(data[1].charAt(0) == 'M') {
+                countMale++;
+                Node person = new Node(data, countMale);
+                maleHash.put(data[0], person);
+//                totalOccurrences = totalOccurrences + occurrences;
+            } else if(data[1].charAt(0) =='F') {
+                countFemale++;
+                Node person = new Node(data, countFemale);
+                femaleHash.put(data[0], person);
+//                totalOccurrences = totalOccurrences + occurrences;
             }
         }
     }
@@ -92,6 +80,10 @@ public class Hash {
         if(maleHash.containsKey(aName)){
             people.add(maleHash.get(aName));
         }
+
+        for (Node n: people) {
+            printNodePlusPercent(n);
+        }
         return people;
     }
 
@@ -119,17 +111,22 @@ public class Hash {
         }
         ArrayList<Node> sortedGirls = sort(girl);
         ArrayList<Node> sortedBoys = sort(boy);
-        for(Node node : sortedGirls){
-            people.add(node);
-        }
+
+
         for(Node node : sortedBoys){
+            printNodePlusPercent(node);
             people.add(node);
         }
+        System.out.println();
+        for(Node node : sortedGirls){
+            printNodePlusPercent(node);
+            people.add(node);
+        }
+
         return people;
     }
 
     //Prints out the entire list of names in alphabetical order, change the print statement to correct data as needed
-
     public void showNameAlphabetically(){
         HashMap<String, Node> allNames = new HashMap<>();
         Set<String> girlKeys = femaleHash.keySet();
@@ -144,10 +141,12 @@ public class Hash {
         String[] sortingArray = allKeys.toArray(new String[allKeys.size()]);
         Arrays.sort(sortingArray);
         for(String key : sortingArray){
-            double occurrencePercent = ((double)allNames.get(key).getOccurences() / (double)totalOccurrences) *100;
-            System.out.println(allNames.get(key).getName() + ", " + allNames.get(key).getGender() + ", " +
-                    allNames.get(key).getOccurences() + ", " + occurrencePercent + "%");
+            printNodePlusPercent(allNames.get(key));
         }
     }
 
+    private void printNodePlusPercent(Node n) {
+        System.out.println(String.format("%20s", n) + " " +
+                String.format("%.6f", (double)n.getOccurences() / totalOccurrences * 100) + "%");
+    }
 }

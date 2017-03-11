@@ -2,7 +2,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Scanner;
 
 /**
@@ -10,8 +9,9 @@ import java.util.Scanner;
  * @since 25 Feb 2017
  */
 public class BSTree {
-    private Node root;
-    private int totalNames;
+    private TreeNode root;
+    private int totalOccurrences;
+    private int numberOfNames;
 
     /*
     The tree can be constructed in several ways.
@@ -39,20 +39,77 @@ public class BSTree {
      matches. Alphabetical printing is also easy this way.
      */
 
-    public BSTree(String[] lines) {
-        root = buildTree(lines, 0, lines.length - 1);
-        totalNames = totalOccurrences();
+    /*
+        String str = "Abigail";
+
+        char[] array = new char[26];
+        array[0] = 'A'; array[1] = 'B'; array[2] = 'C'; array[3] = 'D';
+        array[4] = 'E'; array[5] = 'F'; array[6] = 'G'; array[7] = 'H';
+        array[8] = 'I'; array[9] = 'J'; array[10] = 'K'; array[11] = 'L';
+
+        array[12] = 'M'; array[13] = 'N'; array[14] = 'O'; array[15] = 'P';
+        array[16] = 'Q'; array[17] = 'R'; array[18] = 'S'; array[19] = 'T';
+        array[20] = 'U'; array[21] = 'V'; array[22] = 'W'; array[23] = 'X';
+
+        array[24] = 'Y'; array[25] = 'Z';
+
+        char[] array1 = new char[26];
+        array1[0] = 'a'; array1[1] = 'b'; array1[2] = 'c'; array1[3] = 'd';
+        array1[4] = 'e'; array1[5] = 'f'; array1[6] = 'g'; array1[7] = 'h';
+        array1[8] = 'i'; array1[9] = 'j'; array1[10] = 'k'; array1[11] = 'l';
+
+        array1[12] = 'm'; array1[13] = 'n'; array1[14] = 'o'; array1[15] = 'p';
+        array1[16] = 'q'; array1[17] = 'r'; array1[18] = 's'; array1[19] = 't';
+        array1[20] = 'u'; array1[21] = 'v'; array1[22] = 'w'; array1[23] = 'x';
+
+        array1[24] = 'y'; array1[25] = 'z';
+
+        for (char c : array1) {
+            System.out.println(Character.getNumericValue(c));
+        }
+        */
 
 
-        Node[] nodes = searchName("Jamie");
-        System.out.println(Arrays.toString(nodes));
+    /**
+     * Constructs the BSTree
+     * @param inputFile yobXXXX.txt
+     * @throws FileNotFoundException
+     */
+    public BSTree(String inputFile) throws FileNotFoundException {
 
-//        showNameAlphabetically();
-//        System.out.println(totalOccurrences());
-//        System.out.println(Arrays.toString(mostPopularName()));
+        Scanner sc = new Scanner(new File(inputFile));
+        String str = "";
+        while (sc.hasNextLine()) {
+            str += sc.nextLine() + "\n";
+        }
+        String[] arr = str.split("\n");
+        Arrays.sort(arr);
+
+        makeTree(arr);
+//        System.out.println(Arrays.binarySearch(arr, "Rayan,F,53"));
+//        System.out.println(arr[25979]);
+//        System.out.println(arr[25978]);
+//        System.out.println(Arrays.toString(arr));
     }
 
-    private Node buildTree(String[] data, int start, int end) {
+    /**
+     * Kicker recursive function to buildTree from an array of lines (parsed in from the input file)
+     * @param lines array of lines (parsed in from the input file)
+     */
+    public void makeTree(String[] lines) {
+        root = buildTree(lines, 0, lines.length - 1);
+        totalOccurrences = totalOccurrences(root);
+        numberOfNames = getNumberOfNames();
+    }
+
+    /**
+     * Recursively builds the tree from an alphabetically sorted array, which is calculated from the input file
+     * @param data sorted array calculated from input file
+     * @param start starting index
+     * @param end ending index
+     * @return returns the root TreeNode
+     */
+    private TreeNode buildTree(String[] data, int start, int end) {
 
         //Base case
         if (start > end) {
@@ -60,25 +117,38 @@ public class BSTree {
         }
 
         int mid = (start + end) / 2;
-        Node node = new Node(data[mid].split(","), null, null);
+        TreeNode treeNode = new TreeNode(data[mid].split(","), null, null);
 
-        node.setLeftChild(buildTree(data, start, mid - 1));
-        node.setRightChild(buildTree(data, mid + 1, end));
+        treeNode.setLeftChild(buildTree(data, start, mid - 1));
+        treeNode.setRightChild(buildTree(data, mid + 1, end));
 
-        return node;
+        return treeNode;
     }
 
     //METHOD DEPRECATED
+
+    /**
+     * Used to add a Node to the tree. Recursive kicker function DEPRECATED
+     * @param values String[] of values for the node [Name, gender, occurrences]
+     */
     private void addNode(String[] values) {
         if (root == null) {
-            root = new Node(values, null, null);
+            root = new TreeNode(values, null, null);
         } else {
             addNode(root, values, 0);
         }
     }
 
     //METHOD DEPRECATED
-    private void addNode(Node parent, String[] values, int charIndex) {
+
+    /**
+     * Recursive function called by addNode(String[] values)
+     * @param parent parent node
+     * @param values values for the new node
+     * @param charIndex Used to determine alphabetical order. eg: Andy and Andrew have the same 3 first letters,
+     *                  so it would iterate to the fourth letter before determining which one takes priority
+     */
+    private void addNode(TreeNode parent, String[] values, int charIndex) {
         String childName = values[0];
         String parentName = parent.getName();
 
@@ -91,7 +161,7 @@ public class BSTree {
         if (childValue < parentValue) {
 
             if (parent.getLeftChild() == null) {
-                parent.setLeftChild(new Node(values, null, null));
+                parent.setLeftChild(new TreeNode(values, null, null));
             } else {
                 addNode(parent.getLeftChild(), values, 0);
             }
@@ -99,7 +169,7 @@ public class BSTree {
         } else if (childValue > parentValue) {
 
             if (parent.getRightChild() == null) {
-                parent.setRightChild(new Node(values, null, null));
+                parent.setRightChild(new TreeNode(values, null, null));
             }
             else {
                 addNode(parent.getRightChild(), values, 0);
@@ -113,145 +183,207 @@ public class BSTree {
         }
     }
 
-    public Node[] searchName(String name) {
+    /**
+     * Recursive kicker function for searchName(String name, Treenode treeNode)
+     * @param name Name to search
+     * @return returns an array of two nodes if there is a male + female of that name, one node if not
+     */
+    public TreeNode[] searchName(String name) {
         //need to find out if there are two genders, end up searching tree anyway
         //First node encountered will be male or female, if there is a duplicate
         //Name of the opposite gender, it will be a child node of that parent node
-        Node[] nodes = new Node[2];
+        TreeNode[] treeNodes = new TreeNode[2];
 
-        nodes[0] = searchName(name, root);
-        nodes[1] = searchName(name, nodes[0].getLeftChild());
+        treeNodes[0] = searchName(name, root);
+        treeNodes[1] = searchName(name, treeNodes[0].getLeftChild());   //any duplicate name must be a child of the first
+                                                                        //instance of the name in the tree. IF SORTED ALPHABETICALLY
 
-        if (nodes[1] == null) {
-            nodes[1] = searchName(name, nodes[0].getRightChild());
+        if (treeNodes[1] == null) {
+            treeNodes[1] = searchName(name, treeNodes[0].getRightChild());
         }
 
-        return nodes;
+        for (TreeNode n: treeNodes) {
+            printNodePlusPercent(n);
+        }
+        return treeNodes;
     }
 
-    private Node searchName(String name, Node node) {
-        if (node == null) return null;
-        if (node.getName().equals(name)) {
-            return node;
+    /**
+     * recursive search function
+     * @param name name to search
+     * @param treeNode root node
+     * @return Returns the first instance of the name found
+     */
+    private TreeNode searchName(String name, TreeNode treeNode) {
+        if (treeNode == null) return null;
+        if (treeNode.getName().equalsIgnoreCase(name)) {
+            return treeNode;
         } else {
-            if (isAlphabetical(name, node.getName())) {
-                return searchName(name, node.getLeftChild());
+            if (isAlphabetical(name, treeNode.getName())) {
+                return searchName(name, treeNode.getLeftChild());
             } else {
-                return searchName(name, node.getRightChild());
+                return searchName(name, treeNode.getRightChild());
             }
         }
     }
 
+    /**
+     * Determines which name, given two, take alphabetical priority
+     * @param name1
+     * @param name2
+     * @return Returns the higher priority name
+     */
     private boolean isAlphabetical(String name1, String name2) {
         String[] arr = {name1, name2};
         Arrays.sort(arr);
         return (arr[0]).equals(name1);
     }
 
-    public Node[] mostPopularName() {
+    /**
+     * prints the 10 most popular male and female names by occurrences
+     * @return has capability to return the resulting array of 20 names.
+     */
+    public TreeNode[] mostPopularName() {
         //collect 10 male names
-        Node[] male = new Node[10];
+        TreeNode[] male = new TreeNode[10];
 //        male[0] = extractMax(root, 0, 'F');
-        Node mNode;
-        ArrayList<Integer> mIgnoreValues = new ArrayList<>();
+        TreeNode mTreeNode;
+        ArrayList<TreeNode> mIgnoreValues = new ArrayList<>();
 
         for (int i = 0; i < 10; i++) {
-            mNode = extractMax(root, mIgnoreValues, 'F');
-            male[i] = mNode;
-            mIgnoreValues.add(mNode.getOccurences());
+            mTreeNode = extractMax(root, mIgnoreValues, 'F');
+            male[i] = mTreeNode;
+            mIgnoreValues.add(mTreeNode);
         }
 
         //collect 10 female names
-        Node[] female = new Node[10];
+        TreeNode[] female = new TreeNode[10];
 //        female[0] = extractMax(root, 0, 'M');
-        Node fNode;
-        ArrayList<Integer> fIgnoreValues = new ArrayList<>();
+        TreeNode fTreeNode;
+        ArrayList<TreeNode> fIgnoreValues = new ArrayList<>();
 
         for (int i = 0; i < 10; i++) {
-            fNode = extractMax(root, fIgnoreValues, 'M');
-            female[i] = fNode;
-            fIgnoreValues.add(fNode.getOccurences());
+            fTreeNode = extractMax(root, fIgnoreValues, 'M');
+            female[i] = fTreeNode;
+            fIgnoreValues.add(fTreeNode);
         }
 
-        Node[] result = new Node[20];
+        for (TreeNode n : male) {
+            printNodePlusPercent(n);
+
+        }
+        System.out.println();
+        for (TreeNode n : female) {
+            printNodePlusPercent(n);
+        }
+
+        TreeNode[] result = new TreeNode[20];
         for (int i = 0; i < 10; i++) {
             result[i] = male[i];
             result[i+10] = female[i];
         }
+
         return result;
     }
 
-    public static Node extractMax(Node node, ArrayList<Integer> ignoreVal, char ignoreGender) {
-        int max = node.getOccurences();
-        Node maxNode = node;
+    /**
+     * Extracts the node with the maximum occurrences from the tree, ignoring any name in the ignore value list
+     * @param treeNode Root/parent
+     * @param ignoreVal ignores nodes that have been found already
+     * @param ignoreGender ignores this gender (to search for just male and just female names)
+     * @return returns the node with the largest num of occurrences not in the ignore val list
+     */
+    public static TreeNode extractMax(TreeNode treeNode, ArrayList<TreeNode> ignoreVal, char ignoreGender) {
+        int max = treeNode.getOccurences();
+        TreeNode maxTreeNode = treeNode;
 
-        // only check if this node is not a leaf
-        if (node.getRightChild() != null) {
-            Node maxRight = extractMax(node.getRightChild(), ignoreVal, ignoreGender);
+        // only check if this treeNode is not a leaf
+        if (treeNode.getRightChild() != null) {
+            TreeNode maxRight = extractMax(treeNode.getRightChild(), ignoreVal, ignoreGender);
             if (maxRight.getOccurences() > max &&
-                    !ignoreVal.contains(maxRight.getOccurences()) &&
+                    !ignoreVal.contains(maxRight) &&
                     maxRight.getGender() != ignoreGender) {
                 max = maxRight.getOccurences();
-                maxNode = maxRight;
+                maxTreeNode = maxRight;
             }
         }
 
-        if (node.getLeftChild() != null) {
-            Node maxLeft = extractMax(node.getLeftChild(), ignoreVal, ignoreGender);
+        if (treeNode.getLeftChild() != null) {
+            TreeNode maxLeft = extractMax(treeNode.getLeftChild(), ignoreVal, ignoreGender);
             if (maxLeft.getOccurences() > max &&
                     !ignoreVal.contains(maxLeft.getOccurences()) &&
                     maxLeft.getGender() != ignoreGender) {
 //                max = maxLeft.getOccurences();
-                maxNode = maxLeft;
+                maxTreeNode = maxLeft;
 
             }
         }
 
-        return maxNode;
+        return maxTreeNode;
     }
 
-    private boolean contains(Node[] arr, Node n) {
-        for (Node node : arr) {
-            if (n == node) {
+    /**
+     * determines if a node is in an array. DEPRECATED
+     * @param arr TreeNode array
+     * @param n TreeNode to find
+     * @return boolean
+     */
+    private boolean contains(TreeNode[] arr, TreeNode n) {
+        for (TreeNode treeNode : arr) {
+            if (n == treeNode) {
                 return true;
             }
         }
         return false;
     }
 
+    /**
+     * recursive kicker function
+     */
     public void showNameAlphabetically() {
         showNameAlphabetically(root);
     }
 
-    private void showNameAlphabetically(Node node) {
-        if (node != null) {
-            showNameAlphabetically(node.getLeftChild());
-            System.out.println(node);
-            showNameAlphabetically(node.getRightChild());
+    /**
+     * prints tree in order traversal recursively. Tree is built alphabetically in order
+     * @param treeNode
+     */
+    private void showNameAlphabetically(TreeNode treeNode) {
+        if (treeNode != null) {
+            showNameAlphabetically(treeNode.getLeftChild());
+            printNodePlusPercent(treeNode);
+            showNameAlphabetically(treeNode.getRightChild());
         }
     }
 
-    private int totalOccurrences() {
-        return totalOccurrences(root);
+    public int getTotalOccurrences() {
+        return totalOccurrences;
     }
 
-    private int totalOccurrences(Node node) {
-        if (node != null) {
-            return node.getOccurences() + totalOccurrences(node.getRightChild())
-                    + totalOccurrences(node.getLeftChild());
+    private int totalOccurrences(TreeNode treeNode) {
+        if (treeNode != null) {
+            return treeNode.getOccurences() + totalOccurrences(treeNode.getRightChild())
+                    + totalOccurrences(treeNode.getLeftChild());
         } else return 0;
     }
 
-    public void print() {
-        print(root);
+    public int getNumberOfNames() {
+        return getNumberOfNames(root);
     }
 
-    private void print(Node root) {
-        if (root != null) {
-            print(root.getLeftChild());
-            System.out.println(root.toString());
-            print(root.getRightChild());
+    private int getNumberOfNames(TreeNode treeNode) {
+        if (treeNode != null) {
+            return 1 + getNumberOfNames(treeNode.getRightChild())
+                    + getNumberOfNames(treeNode.getLeftChild());
+        } else return 0;
+    }
 
-        }
+    /**
+     * simple print function to keep all printed data consistent. Pads the node data and the percent occurrences data
+     * @param n
+     */
+    private void printNodePlusPercent(TreeNode n) {
+        System.out.println(String.format("%20s", n) + " " +
+                String.format("%.6f", (double)n.getOccurences() / totalOccurrences * 100) + "%");
     }
 }

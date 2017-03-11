@@ -12,40 +12,80 @@ public class NameData {
     private static Hash hash;
     private static NameList list;
 
+    /**
+     * constructs a NameData object. Created for simplicity's sake of having all three data structures
+     * @param inputFile
+     * @throws FileNotFoundException
+     */
     public NameData(String inputFile) throws FileNotFoundException{
+//        testHash(inputFile);
+//        testList(inputFile);
+//        testTree(inputFile);
+        System.out.println("Please wait, building data structures...");
+
         createTree(inputFile);
-//        createHashMap();
-//        createArrayList();
+        createHashMap(inputFile);
+        createArrayList(inputFile);
+
+        System.out.println("Build complete.");
+        System.out.println();
+
+
     }
 
     public static void createTree(String inputFile) throws FileNotFoundException {
+        long startTime = System.nanoTime();
+        tree = new BSTree(inputFile);
+        long endTime = System.nanoTime();
+        System.out.println("...BSTree build completed in "+ (endTime - startTime) / 1000000 + "ms");
+    }
 
-//        tree = new BSTree();
+    public static void createHashMap(String inputFile) {
+        long startTime = System.nanoTime();
+        hash = new Hash(inputFile);
+        long endTime = System.nanoTime();
+        System.out.println("...HashMap build completed in "+ (endTime - startTime) / 1000000 + "ms");
+    }
 
-        Scanner sc = new Scanner(new File(inputFile));
-        String str = "";
-
-        while (sc.hasNextLine()) {
-            str += sc.nextLine() + "\n";
-        }
-        String[] arr = str.split("\n");
-        Arrays.sort(arr);
-//        System.out.println(Arrays.binarySearch(arr, "Rayan,F,53"));
-//        System.out.println(arr[25979]);
-//        System.out.println(arr[25978]);
-//        System.out.println(Arrays.toString(arr));
-        tree = new BSTree(arr);
+    public static void createArrayList(String inputFile) {
+        long startTime = System.nanoTime();
+        list = new NameList(inputFile);  //Make sure this uses arraylist and not an array!
+        long endTime = System.nanoTime();
+        System.out.println("...ArrayList build completed in "+ (endTime - startTime) / 1000000 + "ms");
     }
 
     public BSTree getTree() {
         return tree;
     }
 
-    public static void createHashMap() {
-        hash = new Hash();  //Hashmap obviously
+    public Hash getHash() {
+        return hash;
     }
 
-    public static void createArrayList() {
-        list = new NameList();  //Make sure this uses arraylist and not an array!
+    public NameList getList() {
+        return list;
     }
+
+    /*public void testTree(String inputFile) throws FileNotFoundException{
+        createTree(inputFile);
+        System.out.println(tree.getNumberOfNames());
+        tree.searchName("Rayan"); //returns Node[]
+        tree.mostPopularName();         //returns Node[]
+        tree.showNameAlphabetically();  //Void function
+        System.out.println(tree.getTotalOccurrences());
+    }
+
+    public void testHash(String inputFile) {
+        createHashMap(inputFile);
+        hash.searchName("Rayan");
+        hash.mostPopularName();
+        hash.showNameAlphabetically();
+    }
+
+    public void testList(String inputFile) {
+        createArrayList(inputFile);
+        list.searchName("Rayan"); //return arraylist
+        list.mostPopularName();   //return arraylist
+        list.showNameAlphabetically();
+    }*/
 }

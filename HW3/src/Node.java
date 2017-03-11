@@ -1,53 +1,32 @@
-
 import java.util.Arrays;
 
 /**
  * @author ADKN
- * @since 02 Mar 2017
+ * @since 09 Mar 2017
  */
 public class Node {
-    private Node leftChild;
-    private Node rightChild;
     private String name;
     private char gender;
     private int occurrences;
     private String[] values;
     private int rank;
 
-        /*
-        In order to sort alphabetically, we will consider the numbers 10 - 35.
-        These numbers correspond to Character.getNumericValue(char c), which maps A to 10,
-        B to 11... Etc. Case does not matter. A lowercase a and an uppercase A have the same
-        numeric value. We can use this value (which is the ASCII value by the way) to sort the tree.
-         */
+    /**
+     * Node Object for HashMap and List
+     * @param values
+     * @param rank
+     */
+    public Node(String[] values, int rank){
+        name = values[0];
+        gender = values[1].charAt(0);
+        occurrences = Integer.parseInt(values[2]);
+        this.values = values;
 
-    public Node(String[] readLine, Node left, Node right) {
-        leftChild = left;
-        rightChild = right;
-        name = readLine[0];
-        gender = readLine[1].charAt(0);
-        occurrences = Integer.parseInt(readLine[2]);
-
-        values = readLine;
-    }
-
-    public Node(String name, char gender, int occurrences, int rank){
-        this.name = name;
-        this.gender = gender;
-        this.occurrences = occurrences;
         this.rank = rank;
     }
 
     public String toString() {
         return Arrays.toString(values);
-    }
-
-    public Node getLeftChild() {
-        return leftChild;
-    }
-
-    public Node getRightChild() {
-        return rightChild;
     }
 
     public String getName() {
@@ -72,29 +51,5 @@ public class Node {
 
     public int getRank(){
         return rank;
-    }
-
-    public void setLeftChild(Node leftChild) {
-        this.leftChild = leftChild;
-    }
-
-    public void setRightChild(Node rightChild) {
-        this.rightChild = rightChild;
-    }
-
-    public void setName(String name) {
-        values[0] = name;
-        this.name = name;
-    }
-
-    public void setGender(char c) {
-        //must be M or F!!!
-        values[1] = String.valueOf(c);
-        gender = c;
-    }
-
-    public void setOccurrences(int num) {
-        values[2] = String.valueOf(num);
-        occurrences = num;
     }
 }

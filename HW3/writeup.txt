@@ -12,5 +12,5 @@ merge sort
 
 4. One of the most challenging parts of the assignment was doing the hashmap implentation, specifically the 
 mostPopularName method because the hashmap does not keep order so we had to keep a ranking variable in the 
-Node object in order to keep the order of most popular name.
+TreeNode object in order to keep the order of most popular name.
 
