@@ -70,16 +70,24 @@ public class NameList {
     //Sorts the entire ArrayList alphabetically
 
     private ArrayList<Node> sortAlphabetically(ArrayList<Node> aList){
-        Node temp;
-        for(int i = 1; i < aList.size(); i++){
-            for(int j = i; j > 0; j--){
-                if(aList.get(j - 1).getName().compareTo(aList.get(j).getName()) > 0){
-                    temp = aList.get(j);
-                    aList.set(j, aList.get(j - 1));
-                    aList.set(j - 1, temp);
-                }
+        Collections.sort(aList, new Comparator<Node>() {
+            @Override
+            public int compare(Node o1, Node o2) {
+                return o1.getName().compareToIgnoreCase(o2.getName());
             }
-        }
+        });
+
+        //Inefficient insertion sort with large data sets, use Collections.sort class instead as it likely uses a quick/merge sort instead
+//        Node temp;
+//        for(int i = 1; i < aList.size(); i++){
+//            for(int j = i; j > 0; j--){
+//                if(aList.get(j - 1).getName().compareTo(aList.get(j).getName()) > 0){
+//                    temp = aList.get(j);
+//                    aList.set(j, aList.get(j - 1));
+//                    aList.set(j - 1, temp);
+//                }
+//            }
+//        }
         return aList;
     }
 
@@ -143,7 +151,6 @@ public class NameList {
     }
 
     //Prints out the entire list of names in alphabetical order, change the print statement to correct data as needed
-    //TODO: broken
     public ArrayList<Node> showNameAlphabetically() {
         ArrayList<Node> sortedList = sortAlphabetically(peopleList);
 
